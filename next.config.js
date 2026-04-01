@@ -18,6 +18,7 @@ const nextConfig = {
       bodySizeLimit: '5mb',
     },
   },
+  transpilePackages: ['firebase', 'firebase-admin'],
 };
 
 module.exports = nextConfig;

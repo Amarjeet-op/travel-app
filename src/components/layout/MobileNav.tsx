@@ -2,13 +2,14 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Home, MapPin, MessageSquare, Shield, User, Settings, Bell, LayoutDashboard } from 'lucide-react';
+import { Home, MapPin, MessageSquare, Shield, User, Settings, Bell, LayoutDashboard, Plane } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
 import { useAuthContext } from '@/components/providers/AuthProvider';
 
 const navItems = [
   { href: '/dashboard', label: 'Home', icon: Home },
   { href: '/trips', label: 'Trips', icon: MapPin },
+  { href: '/trips/my-trips', label: 'My Trips', icon: Plane },
   { href: '/messages', label: 'Messages', icon: MessageSquare },
   { href: '/safety-checker', label: 'Safety', icon: Shield },
   { href: '/profile', label: 'Profile', icon: User },

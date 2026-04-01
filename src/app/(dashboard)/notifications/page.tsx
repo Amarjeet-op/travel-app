@@ -56,7 +56,8 @@ export default function NotificationsPage() {
   const getIcon = (type: string) => {
     switch (type) {
       case 'mention': return <MessageSquare className="h-5 w-5 text-blue-500" />;
-      case 'request': return <Calendar className="h-5 w-5 text-orange-500" />;
+      case 'trip_request': return <Calendar className="h-4 w-4 text-amber-500" />;
+      case 'trip_update': return <CheckCircle2 className="h-4 w-4 text-emerald-500" />;
       case 'alert': return <AlertCircle className="h-5 w-5 text-red-500" />;
       default: return <Bell className="h-5 w-5 text-primary" />;
     }
@@ -118,13 +119,19 @@ export default function NotificationsPage() {
                   <p className="text-sm text-muted-foreground mt-1 mb-2">
                     {notification.message}
                   </p>
-                  {notification.conversationId && (
+                  {notification.conversationId ? (
                     <Link href={`/messages/${notification.conversationId}`}>
                       <Button variant="secondary" size="sm" className="h-8 text-xs font-bold gap-2 hover:bg-primary hover:text-white transition-all">
                         View Message <ArrowLeft className="h-3 w-3 rotate-180" />
                       </Button>
                     </Link>
-                  )}
+                  ) : notification.tripId ? (
+                    <Link href={`/trips/my-trips?tab=pending`}>
+                      <Button variant="secondary" size="sm" className="h-8 text-xs font-bold gap-2 hover:bg-primary hover:text-white transition-all">
+                        View Trip Request <ArrowLeft className="h-3 w-3 rotate-180" />
+                      </Button>
+                    </Link>
+                  ) : null}
                 </div>
                 {!notification.read && (
                   <div className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse mt-2 shadow-[0_0_8px_rgba(var(--primary-rgb),0.5)]" />

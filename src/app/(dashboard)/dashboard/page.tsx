@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useAuthContext } from '@/components/providers/AuthProvider';
-import { Users, MapPin, Shield, MessageSquare, Bell, User, ArrowRight, CheckCircle, AlertTriangle } from 'lucide-react';
+import { Users, MapPin, Shield, MessageSquare, Bell, User, ArrowRight, CheckCircle, AlertTriangle, Plane } from 'lucide-react';
 import Link from 'next/link';
 
 export default function DashboardPage() {
@@ -30,6 +30,16 @@ export default function DashboardPage() {
       iconBg: 'bg-gradient-to-br from-blue-500 to-cyan-500',
       iconShadow: 'shadow-blue-500/30',
       accent: 'from-blue-500 to-cyan-500',
+    },
+    {
+      href: '/trips/my-trips',
+      title: 'My Trips',
+      desc: 'Check your posted trips and join requests',
+      icon: Plane,
+      gradient: 'from-orange-500/10 to-amber-500/10 dark:from-orange-500/20 dark:to-amber-500/20',
+      iconBg: 'bg-gradient-to-br from-orange-500 to-amber-500',
+      iconShadow: 'shadow-orange-500/30',
+      accent: 'from-orange-500 to-amber-500',
     },
     {
       href: '/trips/new',

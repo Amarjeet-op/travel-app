@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { loginUser, registerUser, signInWithGoogle } from '@/lib/firebase/auth';
+import { loginUser, registerUser, signInWithGoogle, handleRedirectResult } from '@/lib/firebase/auth';
 import { toast } from 'react-hot-toast';
 import Link from 'next/link';
 import { Shield, Users, MessageSquare, MapPin, ArrowLeft, Sparkles, Heart } from 'lucide-react';
@@ -20,6 +20,31 @@ export default function AuthPage() {
     password: '',
     confirmPassword: '',
   });
+
+  useEffect(() => {
+    const handleGoogleRedirect = async () => {
+      try {
+        const user = await handleRedirectResult();
+        if (user) {
+          setLoading(true);
+          const idToken = await user.getIdToken();
+          const res = await fetch('/api/auth/session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ idToken }),
+          });
+          if (!res.ok) throw new Error('Session creation failed');
+          toast.success('Signed in with Google!');
+          router.push('/onboarding');
+        }
+      } catch (error: any) {
+        toast.error(error.message || 'Google sign-in failed');
+      } finally {
+        setLoading(false);
+      }
+    };
+    handleGoogleRedirect();
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

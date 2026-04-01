@@ -107,13 +107,33 @@ export async function PATCH(request: Request) {
   try {
     const { tripId, requestId, action, reason } = await request.json();
     const db = getAdminDb();
+    
+    // Check current status
+    const reqDoc = await db.collection('tripRequests').doc(requestId).get();
+    if (!reqDoc.exists) return NextResponse.json({ error: 'Request not found' }, { status: 404 });
+    const reqData = reqDoc.data();
+    
+    if (reqData!.status !== 'pending') {
+      return NextResponse.json({ error: 'Request already processed' }, { status: 400 });
+    }
+
     const updates: any = { status: action === 'accept' ? 'accepted' : 'rejected', updatedAt: new Date() };
     if (reason) updates.rejectionReason = reason;
     await db.collection('tripRequests').doc(requestId).update(updates);
 
+    if (action === 'accept') {
+      // Increment trip companions
+      const tripRef = db.collection('trips').doc(tripId);
+      const tripDoc = await tripRef.get();
+      if (tripDoc.exists) {
+        const tripData = tripDoc.data();
+        await tripRef.update({
+          currentCompanions: (tripData?.currentCompanions || 0) + 1
+        });
+      }
+    }
+
     // Notify the requester
-    const reqDoc = await db.collection('tripRequests').doc(requestId).get();
-    const reqData = reqDoc.data();
     if (reqData) {
       await db.collection('notifications').add({
         userId: reqData.requesterId,

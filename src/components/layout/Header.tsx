@@ -27,11 +27,13 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -87,13 +89,13 @@ export default function Header() {
       
       <div className={`relative backdrop-blur-xl border-b border-white/20 dark:border-white/10 transition-all duration-500 ${
         scrolled 
-          ? 'bg-white/80 dark:bg-gray-900/85' 
-          : 'bg-white/90 dark:bg-gray-900/95'
+          ? 'bg-white/95 dark:bg-gray-900/95' 
+          : 'bg-white dark:bg-gray-900'
       }`}>
         <div className="max-w-[1400px] mx-auto flex h-16 items-center justify-between px-4">
           {/* Left: Logo + Nav */}
           <div className="flex items-center gap-5">
-          <Link href={user ? '/dashboard' : '/'} className="flex items-center gap-3 group shrink-0">
+          <Link href={mounted && user ? '/dashboard' : '/'} className="flex items-center gap-3 group shrink-0">
             <div className="relative">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 via-blue-500 to-emerald-500 flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.15)] group-hover:shadow-[0_6px_20px_rgba(0,0,0,0.25)] transition-all duration-300 group-hover:scale-105 group-hover:-translate-y-0.5 animate-[gradientShift_6s_ease-in-out_infinite] bg-[length:200%_200%]">
                 <Shield className="h-5 w-5 text-white animate-[spin_20s_linear_infinite]" />
@@ -157,32 +159,35 @@ export default function Header() {
               </span>
             </Button>
 
-            <Link href="/notifications">
-              <Button variant="ghost" size="icon" className="relative rounded-xl h-9 w-9 overflow-visible transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 hover:shadow-md">
-                <div className="absolute inset-0 bg-muted/60 rounded-xl opacity-0 hover:opacity-100 transition-opacity" />
-                <span className="relative">
-                  <Bell className="h-4 w-4" />
-                  {notificationCount > 0 && (
-                    <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white shadow-sm ring-2 ring-background animate-in zoom-in duration-300">
-                      {notificationCount > 9 ? '9+' : notificationCount}
+            {mounted && user && (
+              <>
+                <Link href="/notifications">
+                  <Button variant="ghost" size="icon" className="relative rounded-xl h-9 w-9 overflow-visible transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 hover:shadow-md">
+                    <div className="absolute inset-0 bg-muted/60 rounded-xl opacity-0 hover:opacity-100 transition-opacity" />
+                    <span className="relative">
+                      <Bell className="h-4 w-4" />
+                      {notificationCount > 0 && (
+                        <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white shadow-sm ring-2 ring-background animate-in zoom-in duration-300">
+                          {notificationCount > 9 ? '9+' : notificationCount}
+                        </span>
+                      )}
                     </span>
-                  )}
-                </span>
-              </Button>
-            </Link>
+                  </Button>
+                </Link>
 
-            {/* Feedback */}
-            <Link href="/feedback">
-              <Button variant="ghost" size="icon" className="relative rounded-xl h-9 w-9 overflow-hidden transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 hover:shadow-md" title="Feedback">
-                <div className="absolute inset-0 bg-muted/60 rounded-xl opacity-0 hover:opacity-100 transition-opacity" />
-                <span className="relative">
-                  <MessageCircleQuestion className="h-4 w-4" />
-                </span>
-              </Button>
-            </Link>
+                <Link href="/feedback">
+                  <Button variant="ghost" size="icon" className="relative rounded-xl h-9 w-9 overflow-hidden transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 hover:shadow-md" title="Feedback">
+                    <div className="absolute inset-0 bg-muted/60 rounded-xl opacity-0 hover:opacity-100 transition-opacity" />
+                    <span className="relative">
+                      <MessageCircleQuestion className="h-4 w-4" />
+                    </span>
+                  </Button>
+                </Link>
+              </>
+            )}
 
             {/* Admin Back Link */}
-            {isAdmin && (
+            {mounted && isAdmin && (
               <Link href="/admin" className="flex-none">
                 <Button 
                   variant="outline" 
@@ -196,7 +201,7 @@ export default function Header() {
             )}
 
             {/* Verification Status Badge */}
-            {user && !isAdmin && !userData?.isVerified && (
+            {mounted && user && !isAdmin && !userData?.isVerified && (
               <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full border-2 border-yellow-500/50 bg-yellow-500/5 text-yellow-600 dark:text-yellow-400 group transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 shadow-sm">
                 <AlertTriangle className="h-3.5 w-3.5 animate-pulse" />
                 <span className="text-[10px] font-black uppercase tracking-wider">Verification Pending</span>
@@ -204,19 +209,21 @@ export default function Header() {
             )}
 
             {/* Profile Avatar */}
-            <Link href="/profile">
-              <Avatar className="h-8 w-8 cursor-pointer transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 hover:shadow-lg ring-2 ring-primary/20 ring-offset-2 ring-offset-background">
-                <AvatarImage src={userData?.photoURL || user?.photoURL || ''} />
-                <AvatarFallback className={`font-semibold text-xs ${isAdmin ? 'bg-red-500 text-white' : 'bg-gradient-to-br from-primary/20 to-primary/10 text-primary'}`}>
-                  {isAdmin ? 'A' : (() => {
-                    const name = userData?.displayName || userData?.name || user?.displayName || '';
-                    if (name.length >= 2) return name.slice(0, 2).toUpperCase();
-                    if (name.length === 1) return name[0].toUpperCase();
-                    return 'U';
-                  })()}
-                </AvatarFallback>
-              </Avatar>
-            </Link>
+            {mounted && user && (
+              <Link href="/profile">
+                <Avatar className="h-8 w-8 cursor-pointer transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 hover:shadow-lg ring-2 ring-primary/20 ring-offset-2 ring-offset-background">
+                  <AvatarImage src={userData?.photoURL || user?.photoURL || ''} />
+                  <AvatarFallback className={`font-semibold text-xs ${isAdmin ? 'bg-red-500 text-white' : 'bg-gradient-to-br from-primary/20 to-primary/10 text-primary'}`}>
+                    {isAdmin ? 'A' : (() => {
+                      const name = userData?.displayName || userData?.name || user?.displayName || '';
+                      if (name.length >= 2) return name.slice(0, 2).toUpperCase();
+                      if (name.length === 1) return name[0].toUpperCase();
+                      return 'U';
+                    })()}
+                  </AvatarFallback>
+                </Avatar>
+              </Link>
+            )}
 
             {/* Menu / Sign Out */}
             <div className="relative" ref={menuRef}>
@@ -228,10 +235,42 @@ export default function Header() {
               </Button>
 
               {mobileMenuOpen && (
-                <div className="absolute right-0 top-full mt-2 w-48 rounded-xl border bg-popover/95 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.15)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.4)] py-1 z-50 animate-in fade-in zoom-in-95 duration-200">
+                <div className="absolute right-0 top-full mt-2 w-56 rounded-xl border bg-popover/95 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.15)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.4)] py-2 z-50 animate-in fade-in zoom-in-95 duration-200 overflow-hidden">
+                  <div className="px-2 pb-2 mb-2 border-b lg:hidden">
+                    {navItems.map((item) => {
+                      const isActive = pathname === item.href;
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                            isActive 
+                              ? 'bg-primary/10 text-primary' 
+                              : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                          }`}
+                        >
+                          <item.icon className="h-4 w-4" />
+                          {item.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                  
+                  {isAdmin && (
+                    <Link 
+                      href="/admin" 
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex lg:hidden items-center gap-3 px-4 py-2.5 text-sm font-bold text-rose-500 hover:bg-rose-500/10 transition-colors mx-1 rounded-lg"
+                    >
+                      <Shield className="h-4 w-4" />
+                      Admin Portal
+                    </Link>
+                  )}
+
                   <button
                     onClick={() => { handleLogout(); setMobileMenuOpen(false); }}
-                    className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-destructive hover:bg-destructive/10 transition-colors rounded-lg mx-1 font-medium"
+                    className="w-[calc(100%-8px)] flex items-center gap-3 px-3 py-2.5 text-sm text-destructive hover:bg-destructive/10 transition-colors rounded-lg mx-1 font-medium"
                   >
                     <LogOut className="h-4 w-4" />
                     Sign Out

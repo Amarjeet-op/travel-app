@@ -57,19 +57,34 @@ export default function TripDetailPage() {
   const { user, userData, loading: authLoading } = useAuthContext();
   const tripId = params.tripId as string;
   const [trip, setTrip] = useState<any>(null);
+  const [userRequest, setUserRequest] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [joining, setJoining] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    fetchTrip();
+    setMounted(true);
+    if (tripId) {
+      fetchTrip();
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tripId]);
+  }, [tripId, user?.uid]);
 
   const fetchTrip = async () => {
     try {
       const res = await fetch(`/api/trips/${tripId}`);
       const data = await res.json();
       setTrip(data);
+
+      if (user && data.creatorId !== user.uid) {
+        const reqRes = await fetch(`/api/trips/${tripId}/requests?tripId=${tripId}`);
+        const reqData = await reqRes.json();
+        const allRequests = reqData.requests || [];
+        
+        // Find current user's request
+        const myReq = allRequests.find((r: any) => r.requesterId === user.uid);
+        setUserRequest(myReq);
+      }
     } catch (error) {
       console.error('Failed to fetch trip:', error);
     } finally {
@@ -101,7 +116,7 @@ export default function TripDetailPage() {
     finally { setJoining(false); }
   };
 
-  if (loading || authLoading) {
+  if (!mounted || loading || authLoading) {
     return (
       <div className="px-4 py-6 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="animate-pulse space-y-6">
@@ -312,7 +327,7 @@ export default function TripDetailPage() {
                     className="w-full"
                     size="lg"
                     onClick={handleJoin}
-                    disabled={joining || !userData?.isVerified}
+                    disabled={joining || !userData?.isVerified || !!userRequest}
                   >
                     {joining ? (
                       <>
@@ -322,17 +337,37 @@ export default function TripDetailPage() {
                       <>
                         <Shield className="h-4 w-4 mr-2" /> Verify to Join
                       </>
+                    ) : userRequest?.status === 'pending' ? (
+                      <>
+                        <Clock className="h-4 w-4 mr-2" /> Request Sent
+                      </>
+                    ) : userRequest?.status === 'accepted' ? (
+                      <>
+                        <CheckCircle className="h-4 w-4 mr-2" /> Request Accepted
+                      </>
+                    ) : userRequest?.status === 'rejected' ? (
+                      <>
+                        <Trash2 className="h-4 w-4 mr-2" /> Request Rejected
+                      </>
                     ) : (
                       <>
                         <Send className="h-4 w-4 mr-2" /> Request to Join
                       </>
                     )}
                   </Button>
-                  {!userData?.isVerified && (
+                  {!userData?.isVerified ? (
                     <p className="text-[10px] text-center text-rose-500 font-bold uppercase tracking-tight animate-pulse">
                       Can only request post verification
                     </p>
-                  )}
+                  ) : userRequest?.status === 'pending' ? (
+                    <p className="text-[10px] text-center text-amber-500 font-medium">
+                      Waiting for creator to approve your request
+                    </p>
+                  ) : userRequest?.status === 'accepted' ? (
+                    <p className="text-[10px] text-center text-green-500 font-medium">
+                      You are a companion on this trip!
+                    </p>
+                  ) : null}
                 </div>
               )}
             </div>

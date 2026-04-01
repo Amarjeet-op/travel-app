@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useSearchParams } from 'next/navigation';
 import {
   MapPin, Calendar, Users, CheckCircle, XCircle, Clock,
   ArrowRight, Plane, Send, Loader2, Check, X, MessageSquare
@@ -13,15 +14,25 @@ import { format } from 'date-fns';
 import { toast } from 'react-hot-toast';
 
 export default function MyTripsPage() {
+  const searchParams = useSearchParams();
+  const initialTab = searchParams.get('tab') || 'active';
+  
   const [data, setData] = useState<any>({
     posted: [], activeTrips: [], pastTrips: [],
     pendingRequests: [], rejectedRequests: [], joined: [],
   });
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('active');
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [processing, setProcessing] = useState<string | null>(null);
 
-  useEffect(() => { fetchTrips(); }, []);
+  useEffect(() => {
+    fetchTrips();
+  }, []);
+
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab) setActiveTab(tab);
+  }, [searchParams]);
 
   const fetchTrips = async () => {
     try {

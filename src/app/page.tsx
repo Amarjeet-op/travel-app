@@ -29,17 +29,17 @@ export default function LandingPage() {
 
   return (
     <ForceLightMode>
-    <div className="min-h-screen bg-[#FAF7F2]">
+    <div className="min-h-screen bg-gradient-to-b from-[#FAF7F2] via-white to-[#F5F1E8]">
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-16 pb-12 sm:pt-20 sm:pb-16 md:pt-24 md:pb-20 lg:pt-28 lg:pb-24">
         {/* 3D Background elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl animate-float" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/8 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
-          <div className="absolute top-1/3 left-1/4 w-48 h-48 bg-violet-500/5 rounded-full blur-2xl animate-float" style={{ animationDelay: '4s' }} />
-          <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-amber-500/5 rounded-full blur-2xl animate-float" style={{ animationDelay: '1s' }} />
+          <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-[100px] animate-float" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/15 rounded-full blur-[120px] animate-float" style={{ animationDelay: '2s' }} />
+          <div className="absolute top-1/3 left-1/4 w-48 h-48 bg-violet-500/10 rounded-full blur-[80px] animate-float" style={{ animationDelay: '4s' }} />
+          <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-amber-500/10 rounded-full blur-[90px] animate-float" style={{ animationDelay: '1s' }} />
           {/* Grid pattern */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(0,0,0,0.03)_1px,transparent_0)] bg-[size:40px_40px] dark:bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.03)_1px,transparent_0)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(var(--primary),0.05)_1px,transparent_0)] bg-[size:40px_40px]" />
         </div>
 
         <div className="container-wide relative z-10 text-center">
@@ -59,7 +59,7 @@ export default function LandingPage() {
               <span className="text-gradient font-display italic">Together.</span>
             </h1>
 
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
+            <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
               Find verified travel companions, check area safety with AI, and explore India with confidence. 
               Built with safety at its core, designed for the modern explorer.
             </p>
@@ -67,7 +67,7 @@ export default function LandingPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Button 
                 size="lg" 
-                className="btn-primary-enhanced text-base px-8 py-6 rounded-xl shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-300 group"
+                className="btn-primary-enhanced text-base px-8 py-6 rounded-xl shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 hover:-translate-y-0.5 transition-all duration-300 group"
                 onClick={() => router.push('/auth')}
               >
                 Get Started
@@ -180,7 +180,7 @@ export default function LandingPage() {
                       <feature.icon className="h-7 w-7 text-white" />
                     </div>
                     <h3 className="text-xl font-display font-semibold mb-2 group-hover:text-primary transition-colors">{feature.title}</h3>
-                    <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
+                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed font-medium">{feature.description}</p>
                   </div>
                 </div>
               </motion.div>
