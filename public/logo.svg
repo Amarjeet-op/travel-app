@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B5CF6"/>
+      <stop offset="30%" style="stop-color:#3B82F6"/>
+      <stop offset="60%" style="stop-color:#10B981"/>
+      <stop offset="100%" style="stop-color:#F59E0B"/>
+    </linearGradient>
+    <linearGradient id="innerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:rgba(255,255,255,0.4)"/>
+      <stop offset="100%" style="stop-color:rgba(255,255,255,0.1)"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <!-- Outer shield -->
+  <path d="M50 5 L88 18 L88 48 C88 72 68 92 50 97 C32 92 12 72 12 48 L12 18 Z" fill="url(#shieldGrad)" filter="url(#glow)"/>
+  <!-- Inner shield -->
+  <path d="M50 14 L78 24 L78 48 C78 66 62 82 50 86 C38 82 22 66 22 48 L22 24 Z" fill="url(#innerGrad)" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+  <!-- Checkmark -->
+  <path d="M38 50 L46 58 L62 40" fill="none" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+  <!-- Decorative dots -->
+  <circle cx="50" cy="28" r="2" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="35" cy="38" r="1.5" fill="rgba(255,255,255,0.4)"/>
+  <circle cx="65" cy="38" r="1.5" fill="rgba(255,255,255,0.4)"/>
+</svg>

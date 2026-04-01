@@ -1,0 +1,13 @@
+'use client';
+
+import { Input } from '@/components/ui/input';
+import { Search } from 'lucide-react';
+
+export default function SearchBar({ value, onChange, placeholder = 'Search...' }: { value: string; onChange: (v: string) => void; placeholder?: string }) {
+  return (
+    <div className="relative">
+      <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+      <Input placeholder={placeholder} className="pl-10" value={value} onChange={(e) => onChange(e.target.value)} />
+    </div>
+  );
+}

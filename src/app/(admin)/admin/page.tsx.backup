@@ -1,0 +1,195 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Users, AlertTriangle, Shield, MessageSquare, FileText, CheckCircle, BarChart3, Clock } from 'lucide-react';
+import Link from 'next/link';
+import { formatDistanceToNow } from 'date-fns';
+
+export default function AdminDashboardPage() {
+  const [stats, setStats] = useState<any>(null);
+  const [logs, setLogs] = useState<any[]>([]);
+  const [weeklyUsers, setWeeklyUsers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  const fetchDashboardData = async () => {
+    try {
+      const [statsRes, logsRes] = await Promise.all([
+        fetch('/api/admin/stats'),
+        fetch('/api/admin/logs?limit=10'),
+      ]);
+
+      const statsData = await statsRes.json();
+      const logsData = await logsRes.json();
+
+      setStats(statsData);
+      setLogs(logsData.logs || []);
+
+      // Calculate weekly user registrations (last 8 weeks)
+      const usersRes = await fetch('/api/admin/users?limit=200');
+      const usersData = await usersRes.json();
+      const users = usersData.users || [];
+
+      const now = new Date();
+      const weeks = Array.from({ length: 8 }, (_, i) => {
+        const start = new Date(now);
+        start.setDate(start.getDate() - (i * 7));
+        start.setHours(0, 0, 0, 0);
+        const end = new Date(start);
+        end.setDate(end.getDate() + 7);
+        return { start, end, count: 0, label: start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) };
+      }).reverse();
+
+      users.forEach((user: any) => {
+        const createdAt = user.createdAt?.toDate ? user.createdAt.toDate() : new Date(user.createdAt);
+        for (const week of weeks) {
+          if (createdAt >= week.start && createdAt < week.end) {
+            week.count++;
+            break;
+          }
+        }
+      });
+
+      setWeeklyUsers(weeks);
+    } catch (error) {
+      console.error('Failed to fetch dashboard data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return <div className="container mx-auto px-4 py-8">Loading...</div>;
+  }
+
+  const statCards = [
+    { label: 'Total Users', value: stats?.totalUsers || 0, icon: Users, color: 'text-blue-500' },
+    { label: 'Pending Verification', value: stats?.pendingVerifications || 0, icon: Shield, color: 'text-yellow-500' },
+    { label: 'Active Trips', value: stats?.activeTrips || 0, icon: FileText, color: 'text-green-500' },
+    { label: 'Active SOS Alerts', value: stats?.activeSOSAlerts || 0, icon: AlertTriangle, color: 'text-red-500' },
+    { label: 'Pending Reports', value: stats?.pendingReports || 0, icon: AlertTriangle, color: 'text-orange-500' },
+    { label: 'Unread Feedback', value: stats?.unreadFeedback || 0, icon: MessageSquare, color: 'text-purple-500' },
+  ];
+
+  const maxWeeklyCount = Math.max(...weeklyUsers.map(w => w.count), 1);
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
+
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {statCards.map((stat) => (
+          <Card key={stat.label}>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">{stat.label}</CardTitle>
+              <stat.icon className={`h-5 w-5 ${stat.color}`} />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold">{stat.value}</div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6 mb-8">
+        <Link href="/admin/users">
+          <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="h-5 w-5" />
+                User Management
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">Review verifications, manage users</p>
+              {stats?.pendingVerifications > 0 && (
+                <Badge variant="warning" className="mt-2">
+                  {stats.pendingVerifications} pending
+                </Badge>
+              )}
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/admin/reports">
+          <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <AlertTriangle className="h-5 w-5" />
+                Reports & SOS
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">Manage safety reports and SOS alerts</p>
+              {stats?.activeSOSAlerts > 0 && (
+                <Badge variant="destructive" className="mt-2">
+                  {stats.activeSOSAlerts} active SOS
+                </Badge>
+              )}
+            </CardContent>
+          </Card>
+        </Link>
+      </div>
+
+      {/* Activity Chart */}
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <BarChart3 className="h-5 w-5" />
+            New Users (Last 8 Weeks)
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-end gap-2 h-40">
+            {weeklyUsers.map((week, i) => (
+              <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                <span className="text-xs font-medium">{week.count}</span>
+                <div 
+                  className="w-full bg-blue-500 rounded-t transition-all hover:bg-blue-600"
+                  style={{ height: `${Math.max((week.count / maxWeeklyCount) * 100, 4)}%` }}
+                />
+                <span className="text-xs text-muted-foreground truncate w-full text-center">{week.label}</span>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Recent Activity Feed */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Clock className="h-5 w-5" />
+            Recent Admin Activity
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {logs.length === 0 ? (
+            <p className="text-muted-foreground text-center py-4">No recent activity</p>
+          ) : (
+            <div className="space-y-3">
+              {logs.map((log) => (
+                <div key={log.id} className="flex items-start justify-between p-3 border rounded-lg">
+                  <div>
+                    <p className="font-semibold text-sm">{log.adminName || log.adminEmail}</p>
+                    <p className="text-sm text-muted-foreground">{log.action} → {log.targetType}: {log.targetId}</p>
+                    {log.details && <p className="text-xs text-muted-foreground mt-1">{log.details}</p>}
+                  </div>
+                  <span className="text-xs text-muted-foreground whitespace-nowrap ml-4">
+                    {log.createdAt?.toDate ? formatDistanceToNow(log.createdAt.toDate(), { addSuffix: true }) : ''}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

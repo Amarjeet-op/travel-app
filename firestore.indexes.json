@@ -1,0 +1,14 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "safetyCache",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "city", "mode": "ASCENDING" },
+        { "fieldPath": "area", "mode": "ASCENDING" },
+        { "fieldPath": "createdAt", "mode": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
