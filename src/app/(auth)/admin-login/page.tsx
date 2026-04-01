@@ -166,20 +166,27 @@ export default function AdminLoginPage() {
               </div>
 
               <h2 className="text-2xl font-bold text-white mb-2 leading-tight">
-                Admin Portal
+                Admin<br />
+                <span className="text-orange-300 italic font-display">Dashboard</span>
               </h2>
               <p className="text-white/60 text-sm leading-relaxed mb-4">
-                Secure access for platform administrators
+                Manage users, moderate content, and ensure platform safety from the command center.
               </p>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
-                  { icon: Lock, title: 'Secure' },
-                  { icon: Shield, title: 'Verified' },
+                  { icon: Users, title: 'User Admin', desc: 'Verify and manage accounts' },
+                  { icon: AlertTriangle, title: 'Safety Watch', desc: 'SOS and platform monitoring' },
+                  { icon: BarChart3, title: 'Live Insights', desc: 'Real-time analytics desk' },
                 ].map((feature, i) => (
-                  <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-white/10 border border-white/20">
-                    <feature.icon className="h-4 w-4 text-orange-300" />
-                    <div className="text-[10px] font-bold text-white uppercase">{feature.title}</div>
+                  <div key={i} className="flex items-center gap-4 p-4 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm">
+                    <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                      <feature.icon className="h-5 w-5 text-orange-300" />
+                    </div>
+                    <div>
+                      <div className="text-[11px] font-bold text-white uppercase tracking-tight leading-none mb-1">{feature.title}</div>
+                      <div className="text-[10px] text-white/50 leading-tight font-medium">{feature.desc}</div>
+                    </div>
                   </div>
                 ))}
               </div>

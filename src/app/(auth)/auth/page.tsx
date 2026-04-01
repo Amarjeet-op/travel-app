@@ -207,21 +207,28 @@ export default function AuthPage() {
             </div>
 
             <h2 className="text-3xl font-bold text-slate-900 mb-2 leading-tight">
-              Welcome to the<br />
-              <span className="text-primary italic font-display">Community</span>
+              Travel <span className="text-primary italic font-display">Fearlessly</span>.<br />
+              Grow Together.
             </h2>
             <p className="text-slate-600 text-sm leading-relaxed max-w-sm mb-6">
-              Join thousands of travelers who trust Abhayam for safe, connected journeys.
+              The premier safety-first travel companion platform designed specifically for the unique landscapes of India.
             </p>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
-                { icon: Shield, title: 'Safe', desc: 'Verified profile' },
-                { icon: Users, title: 'Social', desc: 'Find buddies' },
+                { icon: Shield, title: 'Safe Travels', desc: 'Verified profile & buddies' },
+                { icon: Users, title: 'Social Community', desc: 'Connect with travelers' },
+                { icon: MapPin, title: 'Live Tracking', desc: 'Smart safety companion' },
+                { icon: Sparkles, title: 'AI Checker', desc: 'Real-time assessments' },
               ].map((feature, i) => (
-                <div key={i} className="flex items-center gap-3 p-3 rounded-2xl bg-white border border-slate-100 shadow-sm">
-                  <feature.icon className="h-4 w-4 text-primary" />
-                  <div className="text-[10px] font-bold text-slate-900 uppercase">{feature.title}</div>
+                <div key={i} className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-slate-100 shadow-sm">
+                  <div className="w-10 h-10 rounded-xl bg-primary/5 flex items-center justify-center shrink-0">
+                    <feature.icon className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <div className="text-[11px] font-bold text-slate-900 uppercase tracking-tight leading-none mb-1">{feature.title}</div>
+                    <div className="text-[10px] text-slate-500 leading-tight font-medium">{feature.desc}</div>
+                  </div>
                 </div>
               ))}
             </div>

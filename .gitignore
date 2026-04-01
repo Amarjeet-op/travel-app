@@ -42,3 +42,6 @@ ui-debug.log
 # IDE
 .vscode
 .idea
+
+# Local Netlify folder
+.netlify

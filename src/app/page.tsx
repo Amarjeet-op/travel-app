@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Users, Shield, MessageSquare, MapPin, ArrowRight, Sparkles, Heart, Globe, Plane, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import ForceLightMode from '@/components/shared/ForceLightMode';
 
 export default function LandingPage() {
   const router = useRouter();
@@ -28,7 +27,6 @@ export default function LandingPage() {
   };
 
   return (
-    <ForceLightMode>
     <div className="min-h-screen bg-gradient-to-b from-[#FAF7F2] via-white to-[#F5F1E8]">
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-16 pb-12 sm:pt-20 sm:pb-16 md:pt-24 md:pb-20 lg:pt-28 lg:pb-24">
@@ -53,13 +51,13 @@ export default function LandingPage() {
               <span className="text-sm font-medium text-accent-foreground">Your journey begins here</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 leading-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 leading-tight text-[#2D2118]">
               Travel Fearlessly.
               <br />
               <span className="text-gradient font-display italic">Together.</span>
             </h1>
 
-            <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
+            <p className="text-base sm:text-lg md:text-xl text-gray-700 max-w-2xl mx-auto mb-10 leading-relaxed font-medium px-2">
               Find verified travel companions, check area safety with AI, and explore India with confidence. 
               Built with safety at its core, designed for the modern explorer.
             </p>
@@ -92,14 +90,14 @@ export default function LandingPage() {
             transition={{ delay: 0.4, duration: 0.6 }}
           >
             {[
-              { value: '10K+', label: 'Active Users', icon: Users, gradient: 'from-blue-500/10 to-cyan-500/10 dark:from-blue-500/20 dark:to-cyan-500/20' },
-              { value: '50K+', label: 'Trips Completed', icon: Plane, gradient: 'from-violet-500/10 to-purple-500/10 dark:from-violet-500/20 dark:to-purple-500/20' },
-              { value: '99%', label: 'Safety Rating', icon: Shield, gradient: 'from-emerald-500/10 to-green-500/10 dark:from-emerald-500/20 dark:to-green-500/20' },
-              { value: '500+', label: 'Cities Covered', icon: MapPin, gradient: 'from-amber-500/10 to-orange-500/10 dark:from-amber-500/20 dark:to-orange-500/20' },
+              { value: '10K+', label: 'Active Users', icon: Users, gradient: 'from-blue-500/10 to-cyan-500/10' },
+              { value: '50K+', label: 'Trips Completed', icon: Plane, gradient: 'from-violet-500/10 to-purple-500/10' },
+              { value: '99%', label: 'Safety Rating', icon: Shield, gradient: 'from-emerald-500/10 to-green-500/10' },
+              { value: '500+', label: 'Cities Covered', icon: MapPin, gradient: 'from-amber-500/10 to-orange-500/10' },
             ].map((stat, i) => (
               <div key={i} className={`relative rounded-2xl bg-gradient-to-br ${stat.gradient} p-px group hover:-translate-y-1 transition-all duration-300`}>
                 <div className="absolute inset-0 rounded-2xl bg-primary/5 opacity-0 group-hover:opacity-100 blur-xl transition-opacity" />
-                <div className="relative rounded-2xl bg-card dark:bg-card/95 p-4 sm:p-5 border border-border/50">
+                <div className="relative rounded-2xl bg-white p-4 sm:p-5 border border-border/50">
                   <stat.icon className="h-5 w-5 text-primary mx-auto mb-2" />
                   <div className="text-2xl sm:text-3xl font-bold text-gradient font-display">{stat.value}</div>
                   <div className="text-xs sm:text-sm text-muted-foreground mt-1">{stat.label}</div>
@@ -139,7 +137,7 @@ export default function LandingPage() {
                 icon: Users,
                 title: 'Find Travel Companions',
                 description: 'Post trips and connect with verified travelers heading your way.',
-                gradient: 'from-blue-500/10 to-cyan-500/10 dark:from-blue-500/20 dark:to-cyan-500/20',
+                gradient: 'from-blue-500/10 to-cyan-500/10',
                 iconBg: 'bg-gradient-to-br from-blue-500 to-cyan-500',
                 iconShadow: 'shadow-blue-500/30',
                 accent: 'from-blue-500 to-cyan-500',
@@ -148,7 +146,7 @@ export default function LandingPage() {
                 icon: Shield,
                 title: 'AI Safety Checker',
                 description: 'Get real-time safety assessments for any area using AI powered by Google.',
-                gradient: 'from-emerald-500/10 to-green-500/10 dark:from-emerald-500/20 dark:to-green-500/20',
+                gradient: 'from-emerald-500/10 to-green-500/10',
                 iconBg: 'bg-gradient-to-br from-emerald-500 to-green-500',
                 iconShadow: 'shadow-emerald-500/30',
                 accent: 'from-emerald-500 to-green-500',
@@ -157,7 +155,7 @@ export default function LandingPage() {
                 icon: MessageSquare,
                 title: 'Real-time Chat',
                 description: 'Communicate securely with your travel companions before and during trips.',
-                gradient: 'from-amber-500/10 to-orange-500/10 dark:from-amber-500/20 dark:to-orange-500/20',
+                gradient: 'from-amber-500/10 to-orange-500/10',
                 iconBg: 'bg-gradient-to-br from-amber-500 to-orange-500',
                 iconShadow: 'shadow-amber-500/30',
                 accent: 'from-amber-500 to-orange-500',
@@ -166,21 +164,21 @@ export default function LandingPage() {
                 icon: MapPin,
                 title: 'Emergency SOS',
                 description: 'One-tap emergency alerts with location sharing to your contacts.',
-                gradient: 'from-red-500/10 to-pink-500/10 dark:from-red-500/20 dark:to-pink-500/20',
+                gradient: 'from-red-500/10 to-pink-500/10',
                 iconBg: 'bg-gradient-to-br from-red-500 to-pink-500',
                 iconShadow: 'shadow-red-500/30',
                 accent: 'from-red-500 to-pink-500',
               },
             ].map((feature, i) => (
               <motion.div key={feature.title} variants={itemVariants}>
-                <div className="group relative rounded-2xl bg-gradient-to-br p-px transition-all duration-300 hover:-translate-y-2 hover:shadow-xl dark:hover:shadow-2xl cursor-pointer">
+                <div className="group relative rounded-2xl bg-gradient-to-br p-px transition-all duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer">
                   <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${feature.accent} opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-300`} />
-                  <div className="relative rounded-2xl bg-card dark:bg-card/95 p-6 h-full border border-transparent group-hover:border-primary/10 dark:group-hover:border-primary/20 transition-all duration-300">
+                  <div className="relative rounded-2xl bg-white p-6 h-full border border-gray-100 group-hover:border-primary/10 transition-all duration-300">
                     <div className={`w-14 h-14 ${feature.iconBg} rounded-xl flex items-center justify-center mb-4 shadow-lg ${feature.iconShadow} group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}>
                       <feature.icon className="h-7 w-7 text-white" />
                     </div>
-                    <h3 className="text-xl font-display font-semibold mb-2 group-hover:text-primary transition-colors">{feature.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed font-medium">{feature.description}</p>
+                    <h3 className="text-xl font-display font-semibold mb-2 text-[#2D2118] group-hover:text-primary transition-colors">{feature.title}</h3>
+                    <p className="text-gray-600 leading-relaxed font-medium">{feature.description}</p>
                   </div>
                 </div>
               </motion.div>
@@ -265,18 +263,18 @@ export default function LandingPage() {
             viewport={{ once: true }}
           >
             {[
-              { icon: Heart, title: 'Community First', desc: 'A supportive community of verified travelers who look out for each other.', gradient: 'from-rose-500/10 to-pink-500/10 dark:from-rose-500/20 dark:to-pink-500/20', iconBg: 'bg-gradient-to-br from-rose-500 to-pink-500', shadow: 'shadow-rose-500/30' },
-              { icon: Shield, title: 'Privacy Focused', desc: 'Your data is encrypted and never shared. Safety without compromising privacy.', gradient: 'from-violet-500/10 to-purple-500/10 dark:from-violet-500/20 dark:to-purple-500/20', iconBg: 'bg-gradient-to-br from-violet-500 to-purple-500', shadow: 'shadow-violet-500/30' },
-              { icon: Globe, title: 'Pan-India Coverage', desc: 'From metros to hidden gems, our safety network covers all of India.', gradient: 'from-sky-500/10 to-indigo-500/10 dark:from-sky-500/20 dark:to-indigo-500/20', iconBg: 'bg-gradient-to-br from-sky-500 to-indigo-500', shadow: 'shadow-sky-500/30' },
+              { icon: Heart, title: 'Community First', desc: 'A supportive community of verified travelers who look out for each other.', gradient: 'from-rose-500/10 to-pink-500/10', iconBg: 'bg-gradient-to-br from-rose-500 to-pink-500', shadow: 'shadow-rose-500/30' },
+              { icon: Shield, title: 'Privacy Focused', desc: 'Your data is encrypted and never shared. Safety without compromising privacy.', gradient: 'from-violet-500/10 to-purple-500/10', iconBg: 'bg-gradient-to-br from-violet-500 to-purple-500', shadow: 'shadow-violet-500/30' },
+              { icon: Globe, title: 'Pan-India Coverage', desc: 'From metros to hidden gems, our safety network covers all of India.', gradient: 'from-sky-500/10 to-indigo-500/10', iconBg: 'bg-gradient-to-br from-sky-500 to-indigo-500', shadow: 'shadow-sky-500/30' },
             ].map((item, i) => (
               <motion.div key={item.title} variants={itemVariants} className="group relative rounded-2xl bg-gradient-to-br p-px transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                 <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-100 blur-xl transition-opacity`} />
-                <div className="relative rounded-2xl bg-card dark:bg-card/95 p-6 text-center border border-transparent group-hover:border-primary/10 transition-all duration-300">
+                <div className="relative rounded-2xl bg-white p-6 text-center border border-gray-100 group-hover:border-primary/10 transition-all duration-300">
                   <div className={`w-14 h-14 mx-auto mb-4 ${item.iconBg} rounded-xl flex items-center justify-center shadow-lg ${item.shadow} group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}>
                     <item.icon className="h-6 w-6 text-white" />
                   </div>
-                  <h3 className="text-xl font-display font-semibold mb-2">{item.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{item.desc}</p>
+                  <h3 className="text-xl font-display font-semibold mb-2 text-[#2D2118]">{item.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{item.desc}</p>
                 </div>
               </motion.div>
             ))}
@@ -345,6 +343,5 @@ export default function LandingPage() {
         </div>
       </footer>
     </div>
-    </ForceLightMode>
   );
 }

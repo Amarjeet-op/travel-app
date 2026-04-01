@@ -1,26 +1,31 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import { useTheme } from '@/components/providers/ThemeProvider';
 
 export default function ForceLightMode({ children }: { children: React.ReactNode }) {
+  const { setTheme } = useTheme();
+  const previousTheme = useRef<string | null>(null);
+
   useEffect(() => {
-    const root = document.documentElement;
-    root.classList.add('light');
-    root.classList.remove('dark');
+    // Save current theme to restore later
+    previousTheme.current = localStorage.getItem('abhayam-theme');
+    
+    // Force light mode via the ThemeProvider itself (not just DOM manipulation)
+    setTheme('light');
+
     return () => {
-      const saved = localStorage.getItem('abhayam-theme');
-      root.classList.remove('light', 'dark');
-      if (saved === 'dark') {
-        root.classList.add('dark');
-      } else if (saved === 'light') {
-        root.classList.add('light');
-      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        root.classList.add('dark');
-      } else {
-        root.classList.add('light');
+      // Restore previous theme on unmount
+      if (previousTheme.current === 'dark') {
+        setTheme('dark');
       }
     };
-  }, []);
+  }, [setTheme]);
 
-  return <>{children}</>;
+  // Also force light on the wrapper div for extra safety
+  return (
+    <div className="light" style={{ colorScheme: 'light' }}>
+      {children}
+    </div>
+  );
 }

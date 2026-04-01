@@ -4,6 +4,7 @@ import './globals.css';
 import { AuthProvider } from '@/components/providers/AuthProvider';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import { ToastProvider } from '@/components/providers/ToastProvider';
+import ForceLightMode from '@/components/shared/ForceLightMode';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' });
@@ -32,7 +33,9 @@ export default function RootLayout({
       <body className={`${inter.variable} ${playfair.variable} ${dancingScript.variable} font-sans`}>
         <ThemeProvider>
           <AuthProvider>
-            {children}
+            <ForceLightMode>
+              {children}
+            </ForceLightMode>
             <ToastProvider />
           </AuthProvider>
         </ThemeProvider>

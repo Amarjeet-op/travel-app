@@ -32,6 +32,7 @@ export function ThemeProvider({ children, defaultTheme = 'light' }: ThemeProvide
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark');
     root.classList.add(theme);
+    root.style.colorScheme = theme;
     localStorage.setItem('abhayam-theme', theme);
   }, [theme]);
 
