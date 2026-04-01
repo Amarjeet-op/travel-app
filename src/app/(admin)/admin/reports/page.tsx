@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -23,9 +23,7 @@ export default function AdminReportsPage() {
   const [statusFilter, setStatusFilter] = useState('all');
   const [typeFilter, setTypeFilter] = useState('all');
 
-  useEffect(() => { fetchReports(); }, [activeTab]);
-
-  const fetchReports = async (cursor?: string | null) => {
+  const fetchReports = useCallback(async (cursor?: string | null) => {
     setLoading(true);
     try {
       let url = `/api/admin/reports?limit=20`;
@@ -43,9 +41,16 @@ export default function AdminReportsPage() {
       const data = await res.json();
       setReports(data.reports || []);
       setNextCursor(data.nextCursor || null);
-    } catch (e) { console.error(e); }
-    finally { setLoading(false); }
-  };
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  }, [activeTab, typeFilter]);
+
+  useEffect(() => {
+    fetchReports();
+  }, [fetchReports]);
 
   const handleNextPage = () => {
     if (nextCursor) {

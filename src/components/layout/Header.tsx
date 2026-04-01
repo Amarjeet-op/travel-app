@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Shield, Bell, LogOut, Menu, Sun, Moon, Home, MapPin, MessageSquare, User, MessageCircleQuestion, Plane, AlertTriangle } from 'lucide-react';
 import { useTheme } from '@/components/providers/ThemeProvider';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import SOSButton from '@/components/emergency/SOSButton';
 import { signOutUser } from '@/lib/firebase/auth';
 import { useRouter } from 'next/navigation';
@@ -41,7 +41,7 @@ export default function Header() {
 
   const lastFetchRef = useRef<number>(0);
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     if (!user) return;
     const now = Date.now();
     // Throttle: don't fetch more often than every 2s
@@ -54,12 +54,14 @@ export default function Header() {
         const data = await res.json();
         setNotificationCount(data.unreadCount || 0);
       }
-    } catch (e) { console.error('Failed to fetch notifications', e); }
-  };
+    } catch (e) {
+      console.error('Failed to fetch notifications', e);
+    }
+  }, [user]);
 
   useEffect(() => {
     fetchNotifications();
-  }, [user?.uid, pathname]);
+  }, [fetchNotifications, pathname]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {

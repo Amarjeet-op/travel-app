@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -17,9 +17,7 @@ export default function AdminLogsPage() {
   const [actionFilter, setActionFilter] = useState('all');
   const [targetFilter, setTargetFilter] = useState('all');
 
-  useEffect(() => { fetchLogs(); }, []);
-
-  const fetchLogs = async (cursor?: string | null) => {
+  const fetchLogs = useCallback(async (cursor?: string | null) => {
     setLoading(true);
     try {
       let url = `/api/admin/logs?limit=20`;
@@ -33,9 +31,16 @@ export default function AdminLogsPage() {
       const data = await res.json();
       setLogs(data.logs || []);
       setNextCursor(data.nextCursor || null);
-    } catch (e) { console.error(e); }
-    finally { setLoading(false); }
-  };
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  }, [adminFilter, actionFilter, targetFilter]);
+
+  useEffect(() => {
+    fetchLogs();
+  }, [fetchLogs]);
 
   const handleNextPage = () => {
     if (nextCursor) {

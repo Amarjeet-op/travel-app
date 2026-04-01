@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -18,9 +18,7 @@ export default function AdminTripsPage() {
   const [prevCursors, setPrevCursors] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState('all');
 
-  useEffect(() => { fetchTrips(); }, [activeTab]);
-
-  const fetchTrips = async (cursor?: string | null) => {
+  const fetchTrips = useCallback(async (cursor?: string | null) => {
     setLoading(true);
     try {
       let url = `/api/admin/trips?limit=20`;
@@ -35,9 +33,16 @@ export default function AdminTripsPage() {
       const data = await res.json();
       setTrips(data.trips || []);
       setNextCursor(data.nextCursor || null);
-    } catch (e) { console.error(e); }
-    finally { setLoading(false); }
-  };
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  }, [activeTab]);
+
+  useEffect(() => {
+    fetchTrips();
+  }, [fetchTrips]);
 
   const handleNextPage = () => {
     if (nextCursor) {

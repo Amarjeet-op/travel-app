@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -20,9 +20,7 @@ export default function AdminFeedbackPage() {
   const [activeTab, setActiveTab] = useState('all');
   const [categoryFilter, setCategoryFilter] = useState('all');
 
-  useEffect(() => { fetchFeedback(); }, [activeTab]);
-
-  const fetchFeedback = async (cursor?: string | null) => {
+  const fetchFeedback = useCallback(async (cursor?: string | null) => {
     setLoading(true);
     try {
       let url = `/api/admin/feedback?limit=20`;
@@ -38,9 +36,16 @@ export default function AdminFeedbackPage() {
       const data = await res.json();
       setFeedback(data.feedback || []);
       setNextCursor(data.nextCursor || null);
-    } catch (e) { console.error(e); }
-    finally { setLoading(false); }
-  };
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  }, [activeTab, categoryFilter]);
+
+  useEffect(() => {
+    fetchFeedback();
+  }, [fetchFeedback]);
 
   const handleNextPage = () => {
     if (nextCursor) {

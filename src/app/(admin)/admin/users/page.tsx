@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -22,9 +22,7 @@ export default function AdminUsersPage() {
   const [prevCursors, setPrevCursors] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState('pending');
 
-  useEffect(() => { fetchUsers(); }, [activeTab]);
-
-  const fetchUsers = async (cursor?: string | null) => {
+  const fetchUsers = useCallback(async (cursor?: string | null) => {
     setLoading(true);
     try {
       let url = `/api/admin/users?limit=20`;
@@ -40,9 +38,16 @@ export default function AdminUsersPage() {
       const data = await res.json();
       setUsers(data.users || []);
       setNextCursor(data.nextCursor || null);
-    } catch (e) { console.error(e); }
-    finally { setLoading(false); }
-  };
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  }, [activeTab, search]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
 
   const handleSearch = (value: string) => {
     setSearch(value);
