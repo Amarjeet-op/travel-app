@@ -144,14 +144,39 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </Button>
 
                 {mobileMenuOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-48 rounded-xl border bg-popover/95 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.15)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.4)] py-1 z-50">
-                    <button
-                      onClick={() => { handleLogout(); setMobileMenuOpen(false); }}
-                      className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-destructive hover:bg-destructive/10 transition-colors rounded-lg mx-1 font-medium"
-                    >
-                      <LogOut className="h-4 w-4" />
-                      Sign Out
-                    </button>
+                  <div className="absolute right-0 top-full mt-2 w-64 rounded-2xl border bg-white/95 dark:bg-gray-900/95 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.2)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-2 z-50 animate-scale-in">
+                    <div className="mb-2 px-3 py-2 border-b border-slate-100 dark:border-slate-800">
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Admin Navigation</p>
+                    </div>
+                    <div className="space-y-1">
+                      {adminNavItems.map((item) => {
+                        const isActive = pathname === item.href;
+                        return (
+                          <Link
+                            key={item.href}
+                            href={item.href}
+                            onClick={() => setMobileMenuOpen(false)}
+                            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                              isActive 
+                                ? 'bg-red-500/10 text-red-600 dark:bg-red-500/20 dark:text-red-400' 
+                                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                            }`}
+                          >
+                            <item.icon className={`h-4 w-4 ${isActive ? 'scale-110' : ''}`} />
+                            {item.label}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                    <div className="mt-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                      <button
+                        onClick={() => { handleLogout(); setMobileMenuOpen(false); }}
+                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-red-600 hover:bg-red-50 transition-all dark:hover:bg-red-500/10"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        Sign Out
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
