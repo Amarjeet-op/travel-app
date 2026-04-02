@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useLayoutEffect } from 'react';
 
 type Theme = 'light' | 'dark';
 
@@ -12,32 +12,42 @@ interface ThemeProviderProps {
 interface ThemeContextType {
   theme: Theme;
   setTheme: (theme: Theme) => void;
+  toggleTheme: () => void;
+  mounted: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children, defaultTheme = 'light' }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(defaultTheme);
+  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const saved = localStorage.getItem('abhayam-theme') as Theme | null;
     if (saved) {
       setTheme(saved);
     } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       setTheme('dark');
     }
+    setMounted(true);
   }, []);
 
   useEffect(() => {
+    if (!mounted) return;
+    
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark');
     root.classList.add(theme);
     root.style.colorScheme = theme;
     localStorage.setItem('abhayam-theme', theme);
-  }, [theme]);
+  }, [theme, mounted]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme, toggleTheme, mounted }}>
       {children}
     </ThemeContext.Provider>
   );
@@ -45,6 +55,13 @@ export function ThemeProvider({ children, defaultTheme = 'light' }: ThemeProvide
 
 export function useTheme() {
   const context = useContext(ThemeContext);
-  if (!context) throw new Error('useTheme must be used within ThemeProvider');
+  if (!context) {
+    return { 
+      theme: 'light' as Theme, 
+      setTheme: () => {}, 
+      toggleTheme: () => {},
+      mounted: true
+    };
+  }
   return context;
 }

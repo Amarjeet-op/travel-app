@@ -78,7 +78,16 @@ export default function MyTripsPage() {
   ];
 
   const TripCard = ({ trip, showActions }: { trip: any; showActions?: boolean }) => {
-    const depDate = trip?.departureDate?.toDate ? trip.departureDate.toDate() : new Date(trip?.departureDate);
+    let depDate: Date | null = null;
+    if (trip?.departureDate?._seconds) {
+      depDate = new Date(trip.departureDate._seconds * 1000);
+    } else if (trip?.departureDate?.seconds) {
+      depDate = new Date(trip.departureDate.seconds * 1000);
+    } else if (trip?.departureDate?.toDate) {
+      depDate = trip.departureDate.toDate();
+    } else if (trip?.departureDate) {
+      depDate = new Date(trip.departureDate);
+    }
     return (
       <div className="group relative rounded-2xl bg-gradient-to-br p-px transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:hover:shadow-xl">
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 opacity-0 group-hover:opacity-100 blur-xl transition-opacity" />
@@ -93,7 +102,7 @@ export default function MyTripsPage() {
                   {trip?.fromCity} <span className="text-primary mx-0.5">→</span> {trip?.toCity}
                 </p>
                 <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 font-medium uppercase tracking-wider">
-                  {depDate instanceof Date && !isNaN(depDate.getTime()) ? format(depDate, 'MMM dd, yyyy') : 'No date set'}
+                  {depDate && !isNaN(depDate.getTime()) ? format(depDate, 'MMM dd, yyyy hh:mm a') : 'No date set'}
                 </p>
               </div>
             </div>

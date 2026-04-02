@@ -23,13 +23,23 @@ export default function EditTripPage() {
     fromCity: '',
     toCity: '',
     departureDate: '',
+    departureTime: '',
     returnDate: '',
+    returnTime: '',
     transportMode: 'train',
     maxCompanions: 2,
     budgetRange: 'budget',
     description: '',
     preferences: [] as string[],
   });
+
+  const preferenceOptions = [
+    'Women Only', 'Men Only', 'Co-ed OK', 'Elderly OK', 'Senior Friendly',
+    'Youth Only', 'Adults Only', 'Couples OK', 'Singles Only', 'Families OK',
+    'Smoking', 'Non-Smoking', 'Vegetarian', 'Non-Vegetarian', 'Pets Allowed',
+    'No Pets', 'Music', 'Silence', 'Chatty', 'Quiet', 'Breakfast', 'Lunch', 'Dinner',
+    'Flexi Timing', 'Strict Timing', 'AC Preferred', 'Non-AC OK', 'Night Travel', 'Day Travel'
+  ];
 
   useEffect(() => {
     fetchTrip();
@@ -41,16 +51,33 @@ export default function EditTripPage() {
       const res = await fetch(`/api/trips/${tripId}`);
       if (!res.ok) throw new Error('Failed to fetch trip');
       const data = await res.json();
-      const formatDate = (d: any) => {
-        if (!d) return '';
-        if (d.toDate) return d.toDate().toISOString().split('T')[0];
-        return new Date(d).toISOString().split('T')[0];
+      const formatDateTime = (d: any) => {
+        if (!d) return { date: '', time: '' };
+        let dateObj: Date;
+        if (d._seconds) {
+          dateObj = new Date(d._seconds * 1000);
+        } else if (d.seconds) {
+          dateObj = new Date(d.seconds * 1000);
+        } else if (d.toDate) {
+          dateObj = d.toDate();
+        } else {
+          dateObj = new Date(d);
+        }
+        if (isNaN(dateObj.getTime())) return { date: '', time: '' };
+        return {
+          date: dateObj.toISOString().split('T')[0],
+          time: dateObj.toTimeString().slice(0, 5),
+        };
       };
+      const depDateTime = formatDateTime(data.departureDate);
+      const retDateTime = formatDateTime(data.returnDate);
       setForm({
         fromCity: data.fromCity || '',
         toCity: data.toCity || '',
-        departureDate: formatDate(data.departureDate),
-        returnDate: formatDate(data.returnDate),
+        departureDate: depDateTime.date,
+        departureTime: depDateTime.time,
+        returnDate: retDateTime.date,
+        returnTime: retDateTime.time,
         transportMode: data.transportMode || 'train',
         maxCompanions: data.maxCompanions || 2,
         budgetRange: data.budgetRange || 'budget',
@@ -83,8 +110,14 @@ export default function EditTripPage() {
           ...form,
           fromCoordinates: { lat: fromCityData.lat, lng: fromCityData.lng },
           toCoordinates: { lat: toCityData.lat, lng: toCityData.lng },
-          departureDate: new Date(form.departureDate),
-          returnDate: form.returnDate ? new Date(form.returnDate) : null,
+          departureDate: form.departureTime 
+            ? new Date(`${form.departureDate}T${form.departureTime}:00`)
+            : new Date(form.departureDate),
+          returnDate: form.returnDate 
+            ? (form.returnTime 
+                ? new Date(`${form.returnDate}T${form.returnTime}:00`)
+                : new Date(form.returnDate))
+            : null,
         }),
       });
       if (!res.ok) throw new Error('Failed to update trip');
@@ -173,11 +206,29 @@ export default function EditTripPage() {
                 />
               </div>
               <div className="space-y-2">
+                <Label>Departure Time</Label>
+                <Input
+                  type="time"
+                  value={form.departureTime}
+                  onChange={(e) => setForm({ ...form, departureTime: e.target.value })}
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
                 <Label>Return Date (Optional)</Label>
                 <Input
                   type="date"
                   value={form.returnDate}
                   onChange={(e) => setForm({ ...form, returnDate: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Return Time (Optional)</Label>
+                <Input
+                  type="time"
+                  value={form.returnTime}
+                  onChange={(e) => setForm({ ...form, returnTime: e.target.value })}
                 />
               </div>
             </div>
@@ -235,7 +286,7 @@ export default function EditTripPage() {
             <div className="space-y-2">
               <Label>Preferences</Label>
               <div className="flex flex-wrap gap-2">
-                {['Women only', 'Non-smoker', 'Quiet traveler', 'Adventurous', 'Flexible plans'].map(
+                {preferenceOptions.map(
                   (p) => (
                     <Badge
                       key={p}

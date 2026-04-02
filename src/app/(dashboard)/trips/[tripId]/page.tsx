@@ -172,7 +172,19 @@ export default function TripDetailPage() {
                   {trip.fromCity} <span className="text-muted-foreground mx-1">→</span> {trip.toCity}
                 </h1>
                 <p className="text-muted-foreground text-sm mt-1">
-                  {trip.departureDate?.toDate ? format(trip.departureDate.toDate(), 'EEEE, MMMM dd, yyyy') : trip.departureDate}
+                  {(() => {
+                    let date: Date | null = null;
+                    if (trip.departureDate?._seconds) {
+                      date = new Date(trip.departureDate._seconds * 1000);
+                    } else if (trip.departureDate?.seconds) {
+                      date = new Date(trip.departureDate.seconds * 1000);
+                    } else if (trip.departureDate?.toDate) {
+                      date = trip.departureDate.toDate();
+                    } else if (trip.departureDate && typeof trip.departureDate === 'string') {
+                      date = new Date(trip.departureDate);
+                    }
+                    return date && !isNaN(date.getTime()) ? format(date, 'EEEE, MMMM dd, yyyy hh:mm a') : trip.departureDate || 'Not set';
+                  })()}
                 </p>
               </div>
             </div>
@@ -198,7 +210,19 @@ export default function TripDetailPage() {
                   <div>
                     <p className="text-xs text-muted-foreground">Departure</p>
                     <p className="text-sm font-medium">
-                      {trip.departureDate?.toDate ? format(trip.departureDate.toDate(), 'MMM dd, yyyy') : trip.departureDate}
+                      {(() => {
+                        let date: Date | null = null;
+                        if (trip.departureDate?._seconds) {
+                          date = new Date(trip.departureDate._seconds * 1000);
+                        } else if (trip.departureDate?.seconds) {
+                          date = new Date(trip.departureDate.seconds * 1000);
+                        } else if (trip.departureDate?.toDate) {
+                          date = trip.departureDate.toDate();
+                        } else if (trip.departureDate && typeof trip.departureDate === 'string') {
+                          date = new Date(trip.departureDate);
+                        }
+                        return date && !isNaN(date.getTime()) ? format(date, 'MMM dd, yyyy hh:mm a') : trip.departureDate || 'Not set';
+                      })()}
                     </p>
                   </div>
                 </div>
@@ -223,6 +247,29 @@ export default function TripDetailPage() {
                     <p className="text-sm font-medium capitalize">{trip.budgetRange || 'Not set'}</p>
                   </div>
                 </div>
+                {trip.returnDate && (
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
+                    <Calendar className="h-4 w-4 text-primary shrink-0" />
+                    <div>
+                      <p className="text-xs text-muted-foreground">Return</p>
+                      <p className="text-sm font-medium">
+                        {(() => {
+                          let date: Date | null = null;
+                          if (trip.returnDate?._seconds) {
+                            date = new Date(trip.returnDate._seconds * 1000);
+                          } else if (trip.returnDate?.seconds) {
+                            date = new Date(trip.returnDate.seconds * 1000);
+                          } else if (trip.returnDate?.toDate) {
+                            date = trip.returnDate.toDate();
+                          } else if (trip.returnDate && typeof trip.returnDate === 'string') {
+                            date = new Date(trip.returnDate);
+                          }
+                          return date && !isNaN(date.getTime()) ? format(date, 'MMM dd, yyyy hh:mm a') : trip.returnDate;
+                        })()}
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {trip.description && (

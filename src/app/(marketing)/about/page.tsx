@@ -26,12 +26,12 @@ export default function AboutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2]">
+    <div className="min-h-screen bg-[#FAF7F2] dark:bg-gray-900">
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-20 pb-16 md:pt-28 md:pb-24">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -mr-48 -mt-24" />
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-orange-200/10 rounded-full blur-[100px] -ml-24 -mb-24" />
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 dark:bg-primary/10 rounded-full blur-[120px] -mr-48 -mt-24" />
+          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-orange-200/10 dark:bg-orange-500/5 rounded-full blur-[100px] -ml-24 -mb-24" />
         </div>
 
         <div className="container-wide relative z-10 text-center">
@@ -40,16 +40,16 @@ export default function AboutPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/60 border border-accent mb-8 shadow-sm">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/60 dark:bg-gray-800 border border-accent dark:border-gray-700 mb-8 shadow-sm">
               <Sparkles className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium text-accent-foreground">Our Story & Mission</span>
+              <span className="text-sm font-medium text-accent-foreground dark:text-gray-300">Our Story & Mission</span>
             </div>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 text-[#2D2118]">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 text-[#2D2118] dark:text-white">
               Abhayam — <span className="text-gradient italic font-display">Fearlessness</span>
             </h1>
             
-            <p className="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed font-medium mb-12">
+            <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed font-medium mb-12">
               Sanskrit for &quot;Fearlessness&quot;, Abhayam is more than just a platform. 
               It&apos;s a safety-first ecosystem designed specifically for the unique travel landscapes of India.
             </p>
@@ -68,11 +68,13 @@ export default function AboutPage() {
             viewport={{ once: true }}
           >
             <motion.div variants={itemVariants} className="space-y-6">
-              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center border border-primary/20">
-                <Heart className="h-8 w-8 text-primary" />
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#2D2118]">Our Mission</h2>
-              <p className="text-gray-600 text-lg leading-relaxed">
+              <h2 className="text-3xl md:text-4xl font-bold text-[#2D2118] dark:text-white flex items-center gap-3">
+                <span className="whitespace-nowrap">Our Mission</span>
+                <span className="w-10 h-10 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center border border-primary/20 dark:border-primary/30 shrink-0">
+                  <Heart className="h-5 w-5 text-primary" />
+                </span>
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
                 We believe everyone should be able to travel fearlessly across our beautiful country. 
                 Abhayam empowers travelers to find verified companions, check area safety with AI-driven insights, 
                 and stay connected with a community that looks out for one another.
@@ -84,18 +86,18 @@ export default function AboutPage() {
                   'Real-time AI-powered protection'
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3">
-                    <div className="h-5 w-5 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+                    <div className="h-5 w-5 rounded-full bg-primary/20 dark:bg-primary/30 flex items-center justify-center shrink-0">
                       <div className="h-2 w-2 rounded-full bg-primary" />
                     </div>
-                    <span className="font-semibold text-slate-700">{item}</span>
+                    <span className="font-semibold text-slate-700 dark:text-slate-300">{item}</span>
                   </div>
                 ))}
               </div>
             </motion.div>
 
             <motion.div variants={itemVariants} className="relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-orange-100/50 rounded-3xl blur-3xl" />
-              <div className="relative bg-white p-8 md:p-12 rounded-3xl border border-orange-100 shadow-xl shadow-orange-500/5">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-orange-100/50 dark:from-primary/20 dark:to-orange-900/20 rounded-3xl blur-3xl" />
+              <div className="relative bg-white dark:bg-gray-800 p-8 md:p-12 rounded-3xl border border-orange-100 dark:border-gray-700 shadow-xl shadow-orange-500/5 dark:shadow-orange-500/10">
                 <div className="grid grid-cols-2 gap-6">
                   {[
                     { icon: Shield, title: 'Safe', count: '99%' },
@@ -103,10 +105,10 @@ export default function AboutPage() {
                     { icon: Globe, title: 'India', count: '500+' },
                     { icon: Heart, title: 'Trust', count: '100%' },
                   ].map((stat, i) => (
-                    <div key={i} className="text-center p-4 rounded-2xl bg-[#FAF7F2] border border-slate-100">
+                    <div key={i} className="text-center p-4 rounded-2xl bg-[#FAF7F2] dark:bg-gray-700 border border-slate-100 dark:border-gray-600">
                       <stat.icon className="h-6 w-6 text-primary mx-auto mb-2" />
-                      <div className="text-2xl font-bold text-[#2D2118]">{stat.count}</div>
-                      <div className="text-xs text-slate-500 font-bold uppercase tracking-widest">{stat.title}</div>
+                      <div className="text-2xl font-bold text-[#2D2118] dark:text-white">{stat.count}</div>
+                      <div className="text-xs text-slate-500 dark:text-gray-400 font-bold uppercase tracking-widest">{stat.title}</div>
                     </div>
                   ))}
                 </div>
@@ -121,8 +123,8 @@ export default function AboutPage() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-5xl font-bold text-[#2D2118] mb-4">What We Offer</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-5xl font-bold text-[#2D2118] dark:text-white mb-4">What We Offer</h2>
+            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Every feature in Abhayam is designed from the ground up with safety and community in mind.
             </p>
           </motion.div>
@@ -145,13 +147,13 @@ export default function AboutPage() {
               <motion.div 
                 key={i} 
                 variants={itemVariants}
-                className="group p-8 rounded-3xl bg-white border border-gray-100 hover:border-primary/20 hover:shadow-2xl hover:shadow-orange-500/10 transition-all duration-300"
+                className="group p-8 rounded-3xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 hover:border-primary/20 dark:hover:border-primary/30 hover:shadow-2xl hover:shadow-orange-500/10 dark:hover:shadow-orange-500/20 transition-all duration-300"
               >
-                <div className="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                <div className="w-12 h-12 rounded-xl bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform">
                   <feature.icon className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold text-[#2D2118] mb-3">{feature.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed italic">{feature.desc}</p>
+                <h3 className="text-xl font-bold text-[#2D2118] dark:text-white mb-3">{feature.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed italic">{feature.desc}</p>
               </motion.div>
             ))}
           </motion.div>

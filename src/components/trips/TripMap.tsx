@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { useEffect, useState, useMemo } from 'react';
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -37,26 +38,16 @@ const redIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
-import { useEffect, useState } from 'react';
-
-export default function TripMap({ fromCoordinates, toCoordinates, fromCity, toCity }: TripMapProps) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted || !fromCoordinates || !toCoordinates) {
-    return <div className="h-full w-full flex items-center justify-center text-muted-foreground">Loading map...</div>;
-  }
-
+function TripMapInner({ fromCoordinates, toCoordinates, fromCity, toCity }: TripMapProps) {
   const bounds: [[number, number], [number, number]] = [
     [fromCoordinates.lat, fromCoordinates.lng],
     [toCoordinates.lat, toCoordinates.lng],
   ];
 
+  const mapKey = useMemo(() => `map-${fromCoordinates.lat}-${fromCoordinates.lng}-${toCoordinates.lat}-${toCoordinates.lng}`, [fromCoordinates, toCoordinates]);
+
   return (
-    <MapContainer key={`${fromCoordinates.lat}-${fromCoordinates.lng}-${toCoordinates.lat}-${toCoordinates.lng}`} bounds={bounds} className="h-full w-full rounded-lg" scrollWheelZoom={false}>
+    <MapContainer key={mapKey} bounds={bounds} className="h-full w-full rounded-lg" scrollWheelZoom={false}>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -70,4 +61,18 @@ export default function TripMap({ fromCoordinates, toCoordinates, fromCity, toCi
       <Polyline positions={bounds} color="#3b82f6" weight={3} dashArray="10, 10" />
     </MapContainer>
   );
+}
+
+export default function TripMap({ fromCoordinates, toCoordinates, fromCity, toCity }: TripMapProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted || !fromCoordinates || !toCoordinates) {
+    return <div className="h-full w-full flex items-center justify-center text-muted-foreground">Loading map...</div>;
+  }
+
+  return <TripMapInner fromCoordinates={fromCoordinates} toCoordinates={toCoordinates} fromCity={fromCity} toCity={toCity} />;
 }

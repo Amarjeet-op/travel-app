@@ -1,6 +1,43 @@
 import { NextResponse } from 'next/server';
-import { getAdminDb } from '@/lib/firebase/admin';
+import { getAdminDb, getAdminAuth } from '@/lib/firebase/admin';
 import { requireAdminSession, getAdminIdentity, createAdminLog } from '@/lib/firebase/session';
+
+async function getUserDetails(userId: string, db: any) {
+  try {
+    const userDoc = await db.collection('users').doc(userId).get();
+    if (!userDoc.exists) return null;
+    const userData = userDoc.data();
+    return {
+      userId: userId,
+      userName: userData?.displayName || 'Unknown',
+      userEmail: userData?.email || '',
+      userPhone: userData?.phone || '',
+      emergencyContactName: userData?.emergencyContactName || userData?.emergencyContacts?.[0]?.name || '',
+      emergencyContactPhone: userData?.emergencyContactPhone || userData?.emergencyContacts?.[0]?.phone || '',
+      emergencyContactRelation: userData?.emergencyContactRelation || userData?.emergencyContactRelationship || userData?.emergencyContacts?.[0]?.relationship || '',
+    };
+  } catch (e) {
+    console.error('Error fetching user details:', e);
+    return null;
+  }
+}
+
+async function createNotification(db: any, userId: string, type: string, title: string, message: string, reportId: string) {
+  try {
+    await db.collection('notifications').add({
+      userId: userId,
+      type: type,
+      title: title,
+      message: message,
+      reportId: reportId,
+      read: false,
+      createdAt: new Date(),
+    });
+    console.log('Notification created for user:', userId);
+  } catch (e) {
+    console.error('Error creating notification:', e);
+  }
+}
 
 export async function GET(request: Request) {
   try {
@@ -21,6 +58,22 @@ export async function GET(request: Request) {
       id: doc.id, 
       ...doc.data() 
     }));
+
+    // Fetch user details for each report
+    for (let report of allReports) {
+      const targetUserId = report.userId || report.reporterId;
+      if (targetUserId) {
+        const userDetails = await getUserDetails(targetUserId, db);
+        if (userDetails) {
+          report.userName = userDetails.userName;
+          report.userEmail = userDetails.userEmail;
+          report.userPhone = userDetails.userPhone;
+          report.emergencyContactName = userDetails.emergencyContactName;
+          report.emergencyContactPhone = userDetails.emergencyContactPhone;
+          report.emergencyContactRelation = userDetails.emergencyContactRelation;
+        }
+      }
+    }
 
     // In-memory Filter
     let filteredReports = allReports.filter((r: any) => {
@@ -66,11 +119,23 @@ export async function PATCH(request: Request) {
         break;
       case 'investigate':
         updates.status = 'investigating';
+        const reportDoc = await db.collection('reports').doc(reportId).get();
+        const reportData = reportDoc.data();
+        const targetUserId = reportData?.userId || reportData?.reporterId;
+        if (targetUserId) {
+          await createNotification(db, targetUserId, 'investigation_started', 'SOS Investigation Started', 'Your SOS alert is being investigated by our team. We will update you shortly.', reportId);
+        }
         break;
       case 'resolve':
         updates.status = 'resolved';
         updates.resolvedAt = new Date();
         updates.adminNotes = notes;
+        const resolveReportDoc = await db.collection('reports').doc(reportId).get();
+        const resolveReportData = resolveReportDoc.data();
+        const resolveUserId = resolveReportData?.userId || resolveReportData?.reporterId;
+        if (resolveUserId) {
+          await createNotification(db, resolveUserId, 'sos_resolved', 'SOS Alert Resolved', 'Your SOS alert has been resolved. We are glad you are safe.', reportId);
+        }
         break;
       case 'dismiss':
         updates.status = 'dismissed';

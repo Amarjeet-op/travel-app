@@ -16,21 +16,21 @@ export default function TermsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2]">
+    <div className="min-h-screen bg-[#FAF7F2] dark:bg-gray-900">
       {/* Header */}
-      <section className="pt-20 pb-12 border-b border-orange-100 bg-white/50 backdrop-blur-sm">
+      <section className="pt-20 pb-12 border-b border-orange-100 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm">
         <div className="container-wide text-center">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-100 border border-orange-200 mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-900/30 border border-orange-200 dark:border-orange-700 mb-6">
               <Scale className="h-3.5 w-3.5 text-primary" />
-              <span className="text-xs font-bold text-primary uppercase tracking-wider">User Agreement</span>
+              <span className="text-xs font-bold text-primary dark:text-primary uppercase tracking-wider">User Agreement</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-[#2D2118] mb-4 font-display">Terms of Service</h1>
-            <p className="text-slate-500 font-medium">Agreement between you and Abhayam • January 2026</p>
+            <h1 className="text-4xl md:text-5xl font-bold text-[#2D2118] dark:text-white mb-4 font-display">Terms of Service</h1>
+            <p className="text-slate-500 dark:text-gray-400 font-medium">Agreement between you and Abhayam • January 2026</p>
           </motion.div>
         </div>
       </section>
@@ -43,9 +43,9 @@ export default function TermsPage() {
             animate="visible"
             className="space-y-10"
           >
-            <motion.div variants={itemVariants} className="p-6 rounded-2xl bg-white border border-slate-100 shadow-sm">
-              <p className="text-slate-600 leading-relaxed font-medium">
-                By accessing or using <span className="font-bold text-[#2D2118]">Abhayam</span>, you agree to be bound by these Terms. 
+            <motion.div variants={itemVariants} className="p-6 rounded-2xl bg-white dark:bg-gray-800 border border-slate-100 dark:border-gray-700 shadow-sm">
+              <p className="text-slate-600 dark:text-gray-300 leading-relaxed font-medium">
+                By accessing or using <span className="font-bold text-[#2D2118] dark:text-white">Abhayam</span>, you agree to be bound by these Terms. 
                 Our platform is built on trust, and we expect every traveler to uphold our community standards.
               </p>
             </motion.div>
@@ -91,24 +91,24 @@ export default function TermsPage() {
               <motion.section 
                 key={i} 
                 variants={itemVariants}
-                className="group relative flex gap-6 md:gap-8 p-6 md:p-8 rounded-3xl bg-white border border-slate-100 hover:border-primary/20 hover:shadow-xl hover:shadow-orange-900/5 transition-all duration-300"
+                className="group relative flex gap-6 md:gap-8 p-6 md:p-8 rounded-3xl bg-white dark:bg-gray-800 border border-slate-100 dark:border-gray-700 hover:border-primary/20 dark:hover:border-primary/30 hover:shadow-xl hover:shadow-orange-900/5 dark:hover:shadow-orange-900/10 transition-all duration-300"
               >
                 <div className="shrink-0">
-                  <div className="w-14 h-14 rounded-2xl bg-[#FAF7F2] flex items-center justify-center border border-slate-100 group-hover:bg-primary group-hover:border-primary transition-all duration-500">
+                  <div className="w-14 h-14 rounded-2xl bg-[#FAF7F2] dark:bg-gray-700 flex items-center justify-center border border-slate-100 dark:border-gray-600 group-hover:bg-primary group-hover:border-primary transition-all duration-500">
                     <section.icon className="h-6 w-6 text-primary group-hover:text-white transition-colors" />
                   </div>
-                  <div className="mt-4 text-center text-xs font-black text-slate-200 group-hover:text-primary/20 transition-colors uppercase">{section.step}</div>
+                  <div className="mt-4 text-center text-xs font-black text-slate-200 dark:text-gray-600 group-hover:text-primary/20 transition-colors uppercase">{section.step}</div>
                 </div>
                 <div className="space-y-3">
-                  <h3 className="text-xl font-bold text-[#2D2118]">{section.title}</h3>
-                  <p className="text-slate-600 leading-relaxed font-normal">{section.desc}</p>
+                  <h3 className="text-xl font-bold text-[#2D2118] dark:text-white">{section.title}</h3>
+                  <p className="text-slate-600 dark:text-gray-300 leading-relaxed font-normal">{section.desc}</p>
                 </div>
               </motion.section>
             ))}
 
             <motion.div 
               variants={itemVariants}
-              className="mt-16 p-10 rounded-[2.5rem] bg-[#2D2118] text-white text-center relative overflow-hidden"
+              className="mt-16 p-10 rounded-[2.5rem] bg-[#2D2118] dark:bg-gray-800 text-white dark:text-white text-center relative overflow-hidden"
             >
               <div className="absolute inset-0 opacity-10 pointer-events-none">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary rounded-full blur-3xl -mr-32 -mt-32" />

@@ -1,7 +1,28 @@
 {
   "name": "abhayam",
   "version": "1.0.0",
+  "description": "अभयām (Abhayam) - A modern travel safety and companion matching platform for India",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/abhayam.git"
+  },
+  "keywords": [
+    "travel",
+    "safety",
+    "companion",
+    "India",
+    "women-safety",
+    "firebase",
+    "nextjs",
+    "gemini-ai"
+  ],
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yourusername/abhayam/issues"
+  },
+  "homepage": "https://abhayam.app",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

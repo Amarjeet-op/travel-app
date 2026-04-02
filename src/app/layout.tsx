@@ -2,9 +2,7 @@ import type { Metadata } from 'next';
 import { Inter, Playfair_Display, Dancing_Script } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/components/providers/AuthProvider';
-import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import { ToastProvider } from '@/components/providers/ToastProvider';
-import ForceLightMode from '@/components/shared/ForceLightMode';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' });
@@ -31,14 +29,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${playfair.variable} ${dancingScript.variable} font-sans`}>
-        <ThemeProvider>
-          <AuthProvider>
-            <ForceLightMode>
-              {children}
-            </ForceLightMode>
-            <ToastProvider />
-          </AuthProvider>
-        </ThemeProvider>
+        <AuthProvider>
+          {children}
+          <ToastProvider />
+        </AuthProvider>
       </body>
     </html>
   );

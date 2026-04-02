@@ -65,15 +65,17 @@ export default function AdminLogsPage() {
     fetchLogs();
   };
 
-  if (loading && logs.length === 0) return <div className="container mx-auto px-4 py-8">Loading...</div>;
+  if (loading && logs.length === 0) return <div className="container mx-auto px-4 py-8 text-center">Loading logs...</div>;
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Admin Activity Logs</h1>
+    <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 sm:mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold">Admin Activity Logs</h1>
+      </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Activity Logs</CardTitle>
+        <CardHeader className="pb-3 sm:pb-4">
+          <CardTitle className="text-lg sm:text-xl">Activity Logs</CardTitle>
         </CardHeader>
         <CardContent>
           <AdminFilters
@@ -102,7 +104,7 @@ export default function AdminLogsPage() {
           />
 
           {logs.length === 0 ? (
-            <p className="text-center py-8 text-muted-foreground">No logs found</p>
+            <p className="text-center py-6 sm:py-8 text-muted-foreground">No logs found</p>
           ) : (
             <div className="space-y-2">
               {logs.map((log) => (
@@ -111,22 +113,24 @@ export default function AdminLogsPage() {
             </div>
           )}
 
-          <div className="flex justify-between mt-4">
+          <div className="flex justify-between mt-4 gap-2">
             <Button
               variant="outline"
               size="sm"
               onClick={handlePrevPage}
               disabled={prevCursors.length === 0}
+              className="flex-1 sm:flex-none"
             >
-              <ChevronLeft className="h-4 w-4 mr-1" /> Previous
+              <ChevronLeft className="h-4 w-4 sm:mr-1" /> <span className="hidden sm:inline">Previous</span>
             </Button>
             <Button
               variant="outline"
               size="sm"
               onClick={handleNextPage}
               disabled={!nextCursor}
+              className="flex-1 sm:flex-none"
             >
-              Next <ChevronRight className="h-4 w-4 ml-1" />
+              <span className="hidden sm:inline">Next</span> <ChevronRight className="h-4 w-4 sm:ml-1" />
             </Button>
           </div>
         </CardContent>

@@ -19,7 +19,7 @@ export async function GET(request: Request) {
 
     // Fetch more for in-memory filtering if searching or filtering
     // Since this is an admin panel for a small/medium user base, this is safe
-    const snapshot = await query.limit(500).get();
+    const snapshot = await query.limit(1000).get();
     let allUsers = snapshot.docs.map((doc: any) => ({ 
       id: doc.id, 
       ...doc.data() 
@@ -29,7 +29,7 @@ export async function GET(request: Request) {
     let filteredUsers = allUsers.filter((u: any) => {
       let matches = true;
       if (status && u.status !== status) matches = false;
-      if (verified !== null) {
+      if (verified !== null && verified !== 'all') {
         const isVerifiedBool = (verified === 'true');
         const userVerified = !!u.isVerified; // true if true, false if false/undefined/null
         if (userVerified !== isVerifiedBool) {

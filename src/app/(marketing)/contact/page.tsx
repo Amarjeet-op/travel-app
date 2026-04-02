@@ -8,7 +8,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'react-hot-toast';
 import { motion } from 'framer-motion';
-import { Mail, MessageSquare, Send, Sparkles, Phone, MapPin } from 'lucide-react';
+import { Mail, MessageSquare, Send, Sparkles, Phone, MapPin, ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 
 export default function ContactPage() {
   const [loading, setLoading] = useState(false);
@@ -31,6 +32,17 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-[#FAF7F2]">
+      {/* Back Button */}
+      <div className="container-wide relative z-10 pt-6">
+        <Link 
+          href="/"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Home
+        </Link>
+      </div>
+
       {/* Background Decor */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] opacity-60" />

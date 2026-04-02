@@ -19,13 +19,23 @@ export default function NewTripPage() {
     fromCity: '',
     toCity: '',
     departureDate: '',
+    departureTime: '',
     returnDate: '',
+    returnTime: '',
     transportMode: 'train',
     maxCompanions: 2,
     budgetRange: 'budget',
     description: '',
     preferences: [] as string[],
   });
+
+  const preferenceOptions = [
+    'Women Only', 'Men Only', 'Co-ed OK', 'Elderly OK', 'Senior Friendly',
+    'Youth Only', 'Adults Only', 'Couples OK', 'Singles Only', 'Families OK',
+    'Smoking', 'Non-Smoking', 'Vegetarian', 'Non-Vegetarian', 'Pets Allowed',
+    'No Pets', 'Music', 'Silence', 'Chatty', 'Quiet', 'Breakfast', 'Lunch', 'Dinner',
+    'Flexi Timing', 'Strict Timing', 'AC Preferred', 'Non-AC OK', 'Night Travel', 'Day Travel'
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,8 +58,14 @@ export default function NewTripPage() {
           ...form,
           fromCoordinates: { lat: fromCityData.lat, lng: fromCityData.lng },
           toCoordinates: { lat: toCityData.lat, lng: toCityData.lng },
-          departureDate: new Date(form.departureDate),
-          returnDate: form.returnDate ? new Date(form.returnDate) : null,
+          departureDate: form.departureTime 
+            ? new Date(`${form.departureDate}T${form.departureTime}:00`)
+            : new Date(form.departureDate),
+          returnDate: form.returnDate 
+            ? (form.returnTime 
+                ? new Date(`${form.returnDate}T${form.returnTime}:00`)
+                : new Date(form.returnDate))
+            : null,
         }),
       });
 
@@ -133,6 +149,19 @@ export default function NewTripPage() {
                 />
               </div>
               <div className="space-y-2">
+                <Label htmlFor="departureTime">Departure Time</Label>
+                <Input
+                  id="departureTime"
+                  type="time"
+                  value={form.departureTime}
+                  onChange={(e) => setForm({ ...form, departureTime: e.target.value })}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
                 <Label htmlFor="returnDate">Return Date (Optional)</Label>
                 <Input
                   id="returnDate"
@@ -140,6 +169,15 @@ export default function NewTripPage() {
                   value={form.returnDate}
                   onChange={(e) => setForm({ ...form, returnDate: e.target.value })}
                   min={form.departureDate || new Date().toISOString().split('T')[0]}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="returnTime">Return Time (Optional)</Label>
+                <Input
+                  id="returnTime"
+                  type="time"
+                  value={form.returnTime}
+                  onChange={(e) => setForm({ ...form, returnTime: e.target.value })}
                 />
               </div>
             </div>
@@ -204,7 +242,7 @@ export default function NewTripPage() {
             <div className="space-y-2">
               <Label>Preferences</Label>
               <div className="flex flex-wrap gap-2">
-                {['Women only', 'Non-smoker', 'Quiet traveler', 'Adventurous', 'Flexible plans'].map((pref) => (
+                {preferenceOptions.map((pref) => (
                   <Badge
                     key={pref}
                     variant={form.preferences.includes(pref) ? 'default' : 'outline'}

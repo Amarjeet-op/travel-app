@@ -30,6 +30,10 @@ export default function AdminReportsPage() {
       
       if (activeTab === 'active-sos') {
         url += '&type=sos&status=pending';
+      } else if (activeTab === 'dismissed') {
+        url += '&status=dismissed';
+      } else if (activeTab === 'investigating') {
+        url += '&status=investigating';
       } else if (activeTab !== 'all') {
         url += `&status=${activeTab}`;
       }
@@ -73,40 +77,52 @@ export default function AdminReportsPage() {
   const handleAction = async (reportId: string, action: string) => {
     try {
       const notes = action === 'resolve' || action === 'dismiss' ? prompt('Enter notes (optional):') || '' : '';
-      await fetch('/api/admin/reports', {
+      const res = await fetch('/api/admin/reports', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ reportId, action, notes }),
       });
-      toast.success(`Report ${action}ed successfully`);
-      fetchReports();
+      
+      if (res.ok) {
+        toast.success(`Report ${action}ed successfully`);
+        
+        if (action === 'investigate') {
+          setActiveTab('investigating');
+        } else if (action === 'resolve') {
+          setActiveTab('resolved');
+        } else if (action === 'dismiss') {
+          setActiveTab('resolved');
+        }
+        fetchReports();
+      }
     } catch (e: any) { toast.error(e.message || 'Action failed'); }
   };
 
-  if (loading && reports.length === 0) return <div className="container mx-auto px-4 py-8">Loading...</div>;
+  if (loading && reports.length === 0) return <div className="container mx-auto px-4 py-8 text-center">Loading reports...</div>;
 
   const tabs = [
     { value: 'active-sos', label: 'Active SOS', icon: AlertTriangle },
     { value: 'pending', label: 'Pending', icon: FileText },
     { value: 'investigating', label: 'Investigating', icon: FileText },
     { value: 'resolved', label: 'Resolved', icon: FileText },
+    { value: 'dismissed', label: 'Dismissed', icon: FileText },
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold">Reports & SOS Management</h1>
-        <Link href="/admin" className={buttonVariants({ variant: 'outline' }) + " flex items-center gap-2"}>
-            ← Back to Dashboard
+    <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 sm:mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold">Reports & SOS</h1>
+        <Link href="/admin" className={buttonVariants({ variant: 'outline' }) + " flex items-center gap-2 text-sm"}>
+            ← Back
         </Link>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="mb-4">
+        <TabsList className="mb-4 w-full flex overflow-x-auto">
           {tabs.map((tab) => (
-            <TabsTrigger key={tab.value} value={tab.value} className="flex items-center gap-2">
-              <tab.icon className="h-4 w-4" />
-              {tab.label}
+            <TabsTrigger key={tab.value} value={tab.value} className="flex items-center gap-1 flex-shrink-0 text-xs sm:text-sm">
+              <tab.icon className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">{tab.label}</span>
             </TabsTrigger>
           ))}
         </TabsList>
@@ -114,14 +130,14 @@ export default function AdminReportsPage() {
         {tabs.map((tab) => (
           <TabsContent key={tab.value} value={tab.value}>
             <Card>
-              <CardHeader>
-                <CardTitle>{tab.label}</CardTitle>
+              <CardHeader className="pb-3 sm:pb-4">
+                <CardTitle className="text-lg sm:text-xl">{tab.label}</CardTitle>
               </CardHeader>
               <CardContent>
                 {reports.length === 0 ? (
-                  <p className="text-center py-8 text-muted-foreground">No reports in this category</p>
+                  <p className="text-center py-6 sm:py-8 text-muted-foreground">No reports in this category</p>
                 ) : (
-                  <div className="space-y-4">
+                  <div className="space-y-3 sm:space-y-4">
                     {reports.map((report) => (
                       <div key={report.id}>
                         {report.type === 'sos' && activeTab === 'active-sos' ? (
@@ -134,22 +150,24 @@ export default function AdminReportsPage() {
                   </div>
                 )}
 
-                <div className="flex justify-between mt-4">
+                <div className="flex justify-between mt-4 gap-2">
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={handlePrevPage}
                     disabled={prevCursors.length === 0}
+                    className="flex-1 sm:flex-none"
                   >
-                    <ChevronLeft className="h-4 w-4 mr-1" /> Previous
+                    <ChevronLeft className="h-4 w-4 sm:mr-1" /> <span className="hidden sm:inline">Previous</span>
                   </Button>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={handleNextPage}
                     disabled={!nextCursor}
+                    className="flex-1 sm:flex-none"
                   >
-                    Next <ChevronRight className="h-4 w-4 ml-1" />
+                    <span className="hidden sm:inline">Next</span> <ChevronRight className="h-4 w-4 sm:ml-1" />
                   </Button>
                 </div>
               </CardContent>

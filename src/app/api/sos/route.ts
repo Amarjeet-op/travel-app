@@ -18,9 +18,14 @@ export async function POST(request: Request) {
 
     const reportData: any = {
       type: 'sos',
+      userId: session.uid,
       reporterId: session.uid,
       reporterName: userData?.displayName || 'Unknown',
       reporterEmail: session.email,
+      userPhone: userData?.phone || userData?.emergencyContactPhone || '',
+      emergencyContactName: userData?.emergencyContactName || userData?.emergencyContacts?.[0]?.name || '',
+      emergencyContactPhone: userData?.emergencyContactPhone || userData?.emergencyContacts?.[0]?.phone || '',
+      emergencyContactRelation: userData?.emergencyContactRelationship || userData?.emergencyContacts?.[0]?.relationship || '',
       reportedUserId: null,
       reportedUserName: null,
       description: 'SOS alert triggered',

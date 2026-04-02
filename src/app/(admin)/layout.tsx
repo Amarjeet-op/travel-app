@@ -10,7 +10,7 @@ import {
   Shield, LogOut, Menu, Sun, Moon, BarChart3, Settings,
   MessageCircleQuestion
 } from 'lucide-react';
-import { useTheme } from '@/components/providers/ThemeProvider';
+import { ThemeProvider, useTheme } from '@/components/providers/ThemeProvider';
 import { useState, useEffect, useRef } from 'react';
 import { signOutUser } from '@/lib/firebase/auth';
 import { useRouter } from 'next/navigation';
@@ -24,7 +24,7 @@ const adminNavItems = [
   { href: '/admin/logs', label: 'Logs', icon: MessageSquare },
 ];
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+function AdminLayoutContent({ children }: { children: React.ReactNode }) {
   const { user } = useAuthContext();
   const { theme, setTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -190,5 +190,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {children}
       </main>
     </div>
+  );
+}
+
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <ThemeProvider>
+      <AdminLayoutContent>{children}</AdminLayoutContent>
+    </ThemeProvider>
   );
 }

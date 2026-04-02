@@ -51,13 +51,13 @@ export default function LandingPage() {
               <span className="text-sm font-medium text-accent-foreground">Your journey begins here</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 leading-tight text-[#2D2118]">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 leading-tight text-[#2D2118] dark:text-white">
               Travel Fearlessly.
               <br />
               <span className="text-gradient font-display italic">Together.</span>
             </h1>
 
-            <p className="text-base sm:text-lg md:text-xl text-gray-700 max-w-2xl mx-auto mb-10 leading-relaxed font-medium px-2">
+            <p className="text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed font-medium px-2">
               Find verified travel companions, check area safety with AI, and explore India with confidence. 
               Built with safety at its core, designed for the modern explorer.
             </p>
@@ -74,7 +74,7 @@ export default function LandingPage() {
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="text-base px-8 py-6 rounded-xl border-2 hover:border-primary/50 hover:bg-accent/30 hover:-translate-y-0.5 hover:shadow-md transition-all duration-300"
+                className="text-base px-8 py-6 rounded-xl border-2 hover:border-primary/50 hover:bg-accent/30 hover:-translate-y-0.5 hover:shadow-md transition-all duration-300 dark:border-gray-600 dark:hover:border-primary/50 dark:hover:bg-accent/30"
                 onClick={() => router.push('/about')}
               >
                 Learn More
@@ -97,10 +97,10 @@ export default function LandingPage() {
             ].map((stat, i) => (
               <div key={i} className={`relative rounded-2xl bg-gradient-to-br ${stat.gradient} p-px group hover:-translate-y-1 transition-all duration-300`}>
                 <div className="absolute inset-0 rounded-2xl bg-primary/5 opacity-0 group-hover:opacity-100 blur-xl transition-opacity" />
-                <div className="relative rounded-2xl bg-white p-4 sm:p-5 border border-border/50">
+                <div className="relative rounded-2xl bg-white dark:bg-gray-800 p-4 sm:p-5 border border-border/50 dark:border-gray-700">
                   <stat.icon className="h-5 w-5 text-primary mx-auto mb-2" />
                   <div className="text-2xl sm:text-3xl font-bold text-gradient font-display">{stat.value}</div>
-                  <div className="text-xs sm:text-sm text-muted-foreground mt-1">{stat.label}</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground dark:text-gray-400 mt-1">{stat.label}</div>
                 </div>
               </div>
             ))}
@@ -173,12 +173,12 @@ export default function LandingPage() {
               <motion.div key={feature.title} variants={itemVariants}>
                 <div className="group relative rounded-2xl bg-gradient-to-br p-px transition-all duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer">
                   <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${feature.accent} opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-300`} />
-                  <div className="relative rounded-2xl bg-white p-6 h-full border border-gray-100 group-hover:border-primary/10 transition-all duration-300">
+                    <div className="relative rounded-2xl bg-white dark:bg-gray-800 p-6 h-full border border-gray-100 dark:border-gray-700 group-hover:border-primary/10 dark:group-hover:border-primary/20 transition-all duration-300">
                     <div className={`w-14 h-14 ${feature.iconBg} rounded-xl flex items-center justify-center mb-4 shadow-lg ${feature.iconShadow} group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}>
                       <feature.icon className="h-7 w-7 text-white" />
                     </div>
-                    <h3 className="text-xl font-display font-semibold mb-2 text-[#2D2118] group-hover:text-primary transition-colors">{feature.title}</h3>
-                    <p className="text-gray-600 leading-relaxed font-medium">{feature.description}</p>
+                    <h3 className="text-xl font-display font-semibold mb-2 text-[#2D2118] dark:text-white group-hover:text-primary transition-colors">{feature.title}</h3>
+                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed font-medium">{feature.description}</p>
                   </div>
                 </div>
               </motion.div>
@@ -233,8 +233,8 @@ export default function LandingPage() {
                   </div>
                   <div className={`absolute -inset-2 bg-gradient-to-br ${item.gradient} rounded-2xl blur-sm -z-10 opacity-30 group-hover:opacity-60 transition-opacity`} />
                 </div>
-                <h3 className="text-2xl font-display font-semibold mb-3">{item.title}</h3>
-                <p className="text-muted-foreground text-base leading-relaxed max-w-xs mx-auto">{item.desc}</p>
+                <h3 className="text-2xl font-display font-semibold mb-3 dark:text-white">{item.title}</h3>
+                <p className="text-muted-foreground dark:text-gray-400 text-base leading-relaxed max-w-xs mx-auto">{item.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -269,12 +269,12 @@ export default function LandingPage() {
             ].map((item, i) => (
               <motion.div key={item.title} variants={itemVariants} className="group relative rounded-2xl bg-gradient-to-br p-px transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                 <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-100 blur-xl transition-opacity`} />
-                <div className="relative rounded-2xl bg-white p-6 text-center border border-gray-100 group-hover:border-primary/10 transition-all duration-300">
+                <div className="relative rounded-2xl bg-white dark:bg-gray-800 p-6 text-center border border-gray-100 dark:border-gray-700 group-hover:border-primary/10 dark:group-hover:border-primary/20 transition-all duration-300">
                   <div className={`w-14 h-14 mx-auto mb-4 ${item.iconBg} rounded-xl flex items-center justify-center shadow-lg ${item.shadow} group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}>
                     <item.icon className="h-6 w-6 text-white" />
                   </div>
-                  <h3 className="text-xl font-display font-semibold mb-2 text-[#2D2118]">{item.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{item.desc}</p>
+                  <h3 className="text-xl font-display font-semibold mb-2 text-[#2D2118] dark:text-white">{item.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{item.desc}</p>
                 </div>
               </motion.div>
             ))}
@@ -284,8 +284,8 @@ export default function LandingPage() {
 
       {/* CTA Section */}
       <section className="section-spacing relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-glow to-primary" />
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djZoLTZWMzRoLTZ2LTZoNlYyMmg2djZoNnY2aC02eiIvPjwvZz48L2c+PC9zdmc+')] opacity-30" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-glow to-primary dark:from-primary dark:via-primary dark:to-primary" />
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djZoLTZWMzRoLTZ2LTZoNlYyMmg2djZoNnY2aC02eiIvPjwvZz48L2c+PC9zdmc+')] opacity-30 dark:opacity-20" />
         
         <div className="container-wide relative z-10 text-center">
           <motion.div
@@ -314,22 +314,22 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t bg-muted/20">
+      <footer className="py-12 border-t bg-muted/20 dark:bg-gray-900">
         <div className="container-wide">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex items-center gap-3">
               <div className="relative">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 via-blue-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-primary/20">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 via-blue-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-primary/20 dark:shadow-primary/40">
                   <Shield className="h-5 w-5 text-white animate-[spin_20s_linear_infinite]" />
                 </div>
               </div>
               <div>
-                <span className="font-display font-semibold text-xl block leading-tight">Abhayam</span>
-                <span className="text-[9px] text-muted-foreground block leading-tight">अयम · निर्भयं यात्रा</span>
+                <span className="font-display font-semibold text-xl block leading-tight dark:text-white">Abhayam</span>
+                <span className="text-[9px] text-muted-foreground dark:text-gray-400 block leading-tight">अभयम् · निर्भयं यात्रा</span>
               </div>
             </div>
             
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground dark:text-gray-400">
               &copy; 2026 Abhayam. All rights reserved.
             </p>
             

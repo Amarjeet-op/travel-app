@@ -119,7 +119,7 @@ export default function TripsPage() {
 
       {/* Filters */}
       {showFilters && (
-        <div className="mb-6 p-4 rounded-xl bg-card border border-border/50">
+        <div className="mb-6 p-4 rounded-xl bg-card dark:bg-gray-800 border border-border/50 dark:border-gray-700">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <Input
               placeholder="From city..."
@@ -134,7 +134,7 @@ export default function TripsPage() {
               className="h-10"
             />
             <select
-              className="flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm"
+              className="flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               value={filters.transportMode}
               onChange={(e) => setFilters({ ...filters, transportMode: e.target.value })}
             >
@@ -200,7 +200,34 @@ export default function TripsPage() {
                       <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4 text-primary shrink-0" />
                         <span>
-                          {trip.departureDate?.toDate ? format(trip.departureDate.toDate(), 'MMM dd, yyyy') : trip.departureDate}
+                          {(() => {
+                            let date: Date | null = null;
+                            if (trip.departureDate?._seconds) {
+                              date = new Date(trip.departureDate._seconds * 1000);
+                            } else if (trip.departureDate?.seconds) {
+                              date = new Date(trip.departureDate.seconds * 1000);
+                            } else if (trip.departureDate?.toDate) {
+                              date = trip.departureDate.toDate();
+                            } else if (trip.departureDate && typeof trip.departureDate === 'string') {
+                              date = new Date(trip.departureDate);
+                            }
+                            return date && !isNaN(date.getTime()) ? format(date, 'MMM dd, yyyy hh:mm a') : trip.departureDate || 'Not set';
+                          })()}
+                          {trip.endDate && (
+                            <> - {(() => {
+                              let endDate: Date | null = null;
+                              if (trip.endDate?._seconds) {
+                                endDate = new Date(trip.endDate._seconds * 1000);
+                              } else if (trip.endDate?.seconds) {
+                                endDate = new Date(trip.endDate.seconds * 1000);
+                              } else if (trip.endDate?.toDate) {
+                                endDate = trip.endDate.toDate();
+                              } else if (trip.endDate && typeof trip.endDate === 'string') {
+                                endDate = new Date(trip.endDate);
+                              }
+                              return endDate && !isNaN(endDate.getTime()) ? format(endDate, 'MMM dd, yyyy hh:mm a') : trip.endDate;
+                            })()}</>
+                          )}
                         </span>
                       </div>
                       <div className="flex items-center gap-2">

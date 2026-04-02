@@ -50,10 +50,11 @@ export default function AdminDashboardPage() {
       setRecentTrips(tripsData.trips || []);
       setActiveReports(reportsData.reports || []);
 
-      // Calculate weekly registrations
-      const allUsersRes = await fetch('/api/admin/users?limit=200');
+      // Calculate weekly registrations - fetch ALL users
+      const allUsersRes = await fetch('/api/admin/users?limit=1000&verified=all');
       const allUsersData = await allUsersRes.json();
       const users = allUsersData.users || [];
+      
       const now = new Date();
       const weeks = Array.from({ length: 8 }, (_, i) => {
         const start = new Date(now);
@@ -65,9 +66,28 @@ export default function AdminDashboardPage() {
       }).reverse();
 
       users.forEach((user: any) => {
-        const createdAt = user.createdAt?.toDate ? user.createdAt.toDate() : new Date(user.createdAt);
-        for (const week of weeks) {
-          if (createdAt >= week.start && createdAt < week.end) { week.count++; break; }
+        let createdAt: Date | null = null;
+        // Handle Firestore timestamp - check both _seconds and seconds
+        if (user.createdAt && typeof user.createdAt === 'object') {
+          const seconds = user.createdAt._seconds || user.createdAt.seconds;
+          if (seconds) {
+            createdAt = new Date(seconds * 1000);
+          }
+        }
+        
+        // Always count user if they exist (even without valid date, count as old user)
+        if (createdAt && !isNaN(createdAt.getTime())) {
+          for (const week of weeks) {
+            if (createdAt >= week.start && createdAt < week.end) { 
+              week.count++; 
+              break; 
+            }
+          }
+        } else {
+          // If no valid date, count in oldest week
+          if (weeks.length > 0) {
+            weeks[0].count++;
+          }
         }
       });
       setWeeklyUsers(weeks);
@@ -250,16 +270,18 @@ export default function AdminDashboardPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex items-end gap-1 h-32">
-                {weeklyUsers.map((week, i) => (
-                  <div key={i} className="flex-1 flex flex-col items-center gap-1 group">
-                    <div 
-                      className="w-full bg-primary/80 rounded-t transition-all group-hover:bg-primary min-h-[2px]"
-                      style={{ height: `${Math.max((week.count / maxWeeklyCount) * 100, 2)}%` }}
-                    />
-                    <span className="text-[8px] text-muted-foreground text-center rotate-45 mt-2 origin-left">{week.label}</span>
-                  </div>
-                ))}
+              <div className="h-32 flex items-end justify-around gap-1">
+                {weeklyUsers.map((week, i) => {
+                  const heightPct = maxWeeklyCount > 0 ? (week.count / maxWeeklyCount) * 100 : 0;
+                  const barHeight = Math.max(heightPct, 4);
+                  return (
+                    <div key={i} className="flex-1 flex flex-col items-center h-full justify-end">
+                      <div className="w-full bg-blue-600 rounded-t" style={{ height: `${barHeight}%` }} />
+                      <span className="text-[8px] text-muted-foreground">{week.label}</span>
+                      <span className="text-[10px] font-bold">{week.count}</span>
+                    </div>
+                  );
+                })}
               </div>
             </CardContent>
           </Card>

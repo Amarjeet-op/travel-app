@@ -109,44 +109,44 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="w-full max-w-6xl bg-card rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1),0_10px_30px_rgba(0,0,0,0.05)] border border-white/10 ring-1 ring-black/5 overflow-hidden flex flex-col lg:flex-row min-h-[600px] relative">
+    <div className="w-full max-w-6xl bg-card dark:bg-gray-800 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1),0_10px_30px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3),0_10px_30px_rgba(0,0,0,0.2)] border border-white/10 dark:border-gray-700 ring-1 ring-black/5 dark:ring-gray-700 overflow-hidden flex flex-col lg:flex-row min-h-[600px] relative">
       {/* 3D Depth Highlight */}
-      <div className="absolute inset-0 pointer-events-none border-t border-white/20 rounded-3xl z-30" />
+      <div className="absolute inset-0 pointer-events-none border-t border-white/20 dark:border-gray-600 rounded-3xl z-30" />
       
       {/* Left: Welcome Content (Desktop only split) */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-orange-100/50 via-white to-orange-50 relative overflow-hidden group border-r">
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-orange-100/50 via-white to-orange-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 relative overflow-hidden group border-r dark:border-gray-700">
         {/* Decorative elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-16 -left-16 w-64 h-64 bg-primary/5 rounded-full blur-2xl" />
-          <div className="absolute -bottom-20 -right-20 w-72 h-72 bg-primary/5 rounded-full blur-2xl" />
+          <div className="absolute -top-16 -left-16 w-64 h-64 bg-primary/5 dark:bg-primary/10 rounded-full blur-2xl" />
+          <div className="absolute -bottom-20 -right-20 w-72 h-72 bg-primary/5 dark:bg-primary/10 rounded-full blur-2xl" />
         </div>
 
         <div className="relative z-10 flex flex-col justify-between p-10 xl:p-16 w-full">
           <div>
             {/* Logo */}
             <div className="flex items-center gap-3 mb-10">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20">
+              <div className="w-12 h-12 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center border border-primary/20 dark:border-primary/30">
                 <Shield className="h-6 w-6 text-primary" />
               </div>
               <div>
-                <span className="text-xl font-bold text-slate-900 font-display block leading-tight">Abhayam</span>
-                <span className="text-[10px] text-slate-500 leading-tight uppercase tracking-wider font-bold">Safe Travels · भारत</span>
+                <span className="text-xl font-bold text-slate-900 dark:text-white font-display block leading-tight">Abhayam</span>
+                <span className="text-[10px] text-slate-500 dark:text-gray-400 leading-tight uppercase tracking-wider font-bold">Safe Travels · भारत</span>
               </div>
             </div>
 
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/5 border border-primary/10 mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/5 dark:bg-primary/10 border border-primary/10 dark:border-primary/20 mb-6">
               <Sparkles className="h-3 w-3 text-primary" />
-              <span className="text-xs font-bold text-primary italic">Join the movement!</span>
+              <span className="text-xs font-bold text-primary dark:text-primary italic">Join the movement!</span>
             </div>
 
             {/* Heading */}
-            <h1 className="text-4xl xl:text-5xl font-bold text-slate-900 leading-[1.1] mb-6">
+            <h1 className="text-4xl xl:text-5xl font-bold text-slate-900 dark:text-white leading-[1.1] mb-6">
               Travel <span className="text-primary italic font-display">Fearlessly</span>.<br />
               Grow Together.
             </h1>
 
-            <p className="text-slate-600 text-base leading-relaxed mb-10 max-w-md">
+            <p className="text-slate-600 dark:text-gray-300 text-base leading-relaxed mb-10 max-w-md">
               The premier safety-first travel companion platform designed specifically for the unique landscapes of India.
             </p>
 
@@ -159,19 +159,19 @@ export default function AuthPage() {
                 { icon: Users, title: 'Verified Community', desc: 'Every member is verified' },
               ].map((feature, i) => (
                 <div key={i} className="flex items-center gap-4 group/item">
-                  <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center shrink-0 shadow-sm transition-transform group-hover/item:scale-110">
+                  <div className="w-10 h-10 rounded-xl bg-white dark:bg-gray-700 border border-slate-200 dark:border-gray-600 flex items-center justify-center shrink-0 shadow-sm transition-transform group-hover/item:scale-110">
                     <feature.icon className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 text-sm">{feature.title}</h3>
-                    <p className="text-xs text-slate-500">{feature.desc}</p>
+                    <h3 className="font-bold text-slate-900 dark:text-white text-sm">{feature.title}</h3>
+                    <p className="text-xs text-slate-500 dark:text-gray-400">{feature.desc}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="flex items-center gap-2 text-slate-400 text-[11px] mt-12 font-medium">
+          <div className="flex items-center gap-2 text-slate-400 dark:text-gray-500 text-[11px] mt-12 font-medium">
             <Heart className="h-3.5 w-3.5 text-primary" />
             <span>Empowering travelers across India since 2024</span>
           </div>
@@ -179,38 +179,38 @@ export default function AuthPage() {
       </div>
 
       {/* Right: Auth Form Section */}
-      <div className="flex-1 flex flex-col bg-slate-50/50 backdrop-blur-sm relative">
+      <div className="flex-1 flex flex-col bg-slate-50/50 dark:bg-gray-800/50 backdrop-blur-sm relative">
         {/* Navigation handles */}
         <Link 
           href="/" 
-          className="absolute top-6 left-6 z-20 inline-flex items-center gap-2 text-slate-600 hover:text-primary transition-all duration-300 text-sm font-bold group bg-white border border-slate-200 px-4 py-2 rounded-xl shadow-sm"
+          className="absolute top-6 left-6 z-20 inline-flex items-center gap-2 text-slate-600 dark:text-gray-300 hover:text-primary transition-all duration-300 text-sm font-bold group bg-white dark:bg-gray-700 border border-slate-200 dark:border-gray-600 px-4 py-2 rounded-xl shadow-sm"
         >
           <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform text-primary" />
           <span>Go Home</span>
         </Link>
 
         {/* Mobile Branding - Responsive Layout */}
-        <div className="lg:hidden w-full bg-gradient-to-br from-orange-50 via-white to-orange-50 p-6 pt-20 pb-10 shadow-sm relative overflow-hidden border-b border-slate-100">
+        <div className="lg:hidden w-full bg-gradient-to-br from-orange-50 via-white to-orange-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 p-6 pt-20 pb-10 shadow-sm relative overflow-hidden border-b border-slate-100 dark:border-gray-700">
           <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-50">
-            <div className="absolute -top-10 -left-10 w-40 h-40 bg-primary/10 rounded-full blur-2xl" />
+            <div className="absolute -top-10 -left-10 w-40 h-40 bg-primary/10 dark:bg-primary/20 rounded-full blur-2xl" />
           </div>
 
           <div className="relative z-10">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center border border-slate-200 shadow-sm">
+              <div className="w-12 h-12 rounded-2xl bg-white dark:bg-gray-700 flex items-center justify-center border border-slate-200 dark:border-gray-600 shadow-sm">
                 <Shield className="h-6 w-6 text-primary" />
               </div>
               <div>
-                <span className="text-lg font-bold text-slate-900 block tracking-tight font-display">Abhayam</span>
-                <span className="text-[10px] text-slate-500 block uppercase tracking-widest font-bold">Safe travels · भारत</span>
+                <span className="text-lg font-bold text-slate-900 dark:text-white block tracking-tight font-display">Abhayam</span>
+                <span className="text-[10px] text-slate-500 dark:text-gray-400 block uppercase tracking-widest font-bold">Safe travels · भारत</span>
               </div>
             </div>
 
-            <h2 className="text-3xl font-bold text-slate-900 mb-2 leading-tight">
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-2 leading-tight">
               Travel <span className="text-primary italic font-display">Fearlessly</span>.<br />
               Grow Together.
             </h2>
-            <p className="text-slate-600 text-sm leading-relaxed max-w-sm mb-6">
+            <p className="text-slate-600 dark:text-gray-300 text-sm leading-relaxed max-w-sm mb-6">
               The premier safety-first travel companion platform designed specifically for the unique landscapes of India.
             </p>
 
@@ -221,13 +221,13 @@ export default function AuthPage() {
                 { icon: MapPin, title: 'Live Tracking', desc: 'Smart safety companion' },
                 { icon: Sparkles, title: 'AI Checker', desc: 'Real-time assessments' },
               ].map((feature, i) => (
-                <div key={i} className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-slate-100 shadow-sm">
-                  <div className="w-10 h-10 rounded-xl bg-primary/5 flex items-center justify-center shrink-0">
+                <div key={i} className="flex items-center gap-4 p-4 rounded-2xl bg-white dark:bg-gray-700 border border-slate-100 dark:border-gray-600 shadow-sm">
+                  <div className="w-10 h-10 rounded-xl bg-primary/5 dark:bg-primary/20 flex items-center justify-center shrink-0">
                     <feature.icon className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <div className="text-[11px] font-bold text-slate-900 uppercase tracking-tight leading-none mb-1">{feature.title}</div>
-                    <div className="text-[10px] text-slate-500 leading-tight font-medium">{feature.desc}</div>
+                    <div className="text-[11px] font-bold text-slate-900 dark:text-white uppercase tracking-tight leading-none mb-1">{feature.title}</div>
+                    <div className="text-[10px] text-slate-500 dark:text-gray-400 leading-tight font-medium">{feature.desc}</div>
                   </div>
                 </div>
               ))}
@@ -239,10 +239,10 @@ export default function AuthPage() {
         <div className="flex-1 flex items-center justify-center p-6 sm:p-12 lg:p-16">
           <div className="w-full max-w-sm">
             <div className="text-center mb-8 px-4">
-              <h2 className="text-3xl font-bold text-slate-900 mb-2 tracking-tight">
+              <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-2 tracking-tight">
                 {isLogin ? 'Welcome Back!' : 'Create Account'}
               </h2>
-              <p className="text-slate-500 text-sm font-medium">
+              <p className="text-slate-500 dark:text-gray-400 text-sm font-medium">
                 {isLogin ? 'Sign in to access your travel dashboard' : 'Start your safer travel journey today'}
               </p>
             </div>
@@ -250,49 +250,52 @@ export default function AuthPage() {
             <div className="space-y-6">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-1.5">
-                  <Label htmlFor="email" className="text-slate-700 text-xs font-bold uppercase tracking-wider ml-1">Email Address</Label>
+                  <Label htmlFor="email" className="text-slate-700 dark:text-gray-300 text-xs font-bold uppercase tracking-wider ml-1">Email Address</Label>
                   <Input
                     id="email"
                     type="email"
                     placeholder="name@example.com"
+                    autoComplete="off"
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
                     required
-                    className="h-12 border-slate-200 focus:border-primary focus:ring-primary/10 rounded-xl transition-all font-medium"
+                    className="h-12 border-slate-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-primary focus:ring-primary/10 rounded-xl transition-all font-medium"
                   />
                 </div>
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between ml-1">
-                    <Label htmlFor="password" className="text-slate-700 text-xs font-bold uppercase tracking-wider">Password</Label>
+                    <Label htmlFor="password" className="text-slate-700 dark:text-gray-300 text-xs font-bold uppercase tracking-wider">Password</Label>
                     {isLogin && <Link href="/forgot-password" title="reset password" className="text-[11px] text-primary font-bold hover:underline">Forgot?</Link>}
                   </div>
                   <Input
                     id="password"
                     type="password"
                     placeholder="••••••••"
+                    autoComplete="off"
                     value={form.password}
                     onChange={(e) => setForm({ ...form, password: e.target.value })}
                     required
-                    className="h-12 border-slate-200 focus:border-primary focus:ring-primary/10 rounded-xl transition-all font-medium"
+                    className="h-12 border-slate-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-primary focus:ring-primary/10 rounded-xl transition-all font-medium"
                   />
                 </div>
                 {!isLogin && (
                   <div className="space-y-1.5 slide-in">
-                    <Label htmlFor="confirmPassword" className="text-slate-700 text-xs font-bold uppercase tracking-wider ml-1">Confirm Password</Label>
+                    <Label htmlFor="confirmPassword" className="text-slate-700 dark:text-gray-300 text-xs font-bold uppercase tracking-wider ml-1">Confirm Password</Label>
                     <Input
                       id="confirmPassword"
                       type="password"
                       placeholder="••••••••"
+                      autoComplete="off"
                       value={form.confirmPassword}
                       onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
                       required
-                      className="h-12 border-slate-200 focus:border-primary focus:ring-primary/10 rounded-xl transition-all font-medium"
+                      className="h-12 border-slate-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-primary focus:ring-primary/10 rounded-xl transition-all font-medium"
                     />
                   </div>
                 )}
                 <Button 
                   type="submit" 
-                  className="w-full h-12 text-base font-bold shadow-xl shadow-primary/20 bg-primary hover:bg-primary/90 rounded-xl transition-all duration-300 transform active:scale-95 mt-2" 
+                  className="w-full h-12 text-base font-bold shadow-xl shadow-primary/20 dark:shadow-primary/30 bg-primary hover:bg-primary/90 rounded-xl transition-all duration-300 transform active:scale-95 mt-2" 
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : isLogin ? 'Sign In Now' : 'Join Abhayam'}
@@ -300,14 +303,14 @@ export default function AuthPage() {
               </form>
 
               <div className="relative flex items-center gap-4 py-2">
-                <div className="flex-1 h-[1px] bg-slate-200"></div>
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest whitespace-nowrap">Faster Access</span>
-                <div className="flex-1 h-[1px] bg-slate-200"></div>
+                <div className="flex-1 h-[1px] bg-slate-200 dark:bg-gray-600"></div>
+                <span className="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest whitespace-nowrap">Faster Access</span>
+                <div className="flex-1 h-[1px] bg-slate-200 dark:bg-gray-600"></div>
               </div>
 
               <Button 
                 variant="outline" 
-                className="w-full h-12 border-slate-200 hover:bg-slate-50 font-bold text-slate-700 rounded-xl transition-all flex items-center justify-center gap-3 group" 
+                className="w-full h-12 border-slate-200 dark:border-gray-600 hover:bg-slate-50 dark:hover:bg-gray-700 font-bold text-slate-700 dark:text-gray-300 rounded-xl transition-all flex items-center justify-center gap-3 group" 
                 onClick={handleGoogleSignIn} 
                 disabled={loading}
               >
@@ -321,7 +324,7 @@ export default function AuthPage() {
               </Button>
 
               <div className="text-center">
-                <p className="text-slate-500 text-sm font-medium">
+                <p className="text-slate-500 dark:text-gray-400 text-sm font-medium">
                   {isLogin ? "New to Abhayam?" : "Already verified?"}{' '}
                   <button 
                     className="text-primary font-bold hover:underline underline-offset-4 decoration-2" 
@@ -330,8 +333,8 @@ export default function AuthPage() {
                     {isLogin ? 'Create Account' : 'Sign In'}
                   </button>
                 </p>
-                <div className="mt-6 border-t border-slate-100 pt-4">
-                  <Link href="/admin-login" className="text-[10px] font-bold text-slate-500 hover:text-primary transition-all duration-300 tracking-[0.2em] uppercase hover:underline underline-offset-4 decoration-2">
+                <div className="mt-6 border-t border-slate-100 dark:border-gray-700 pt-4">
+                  <Link href="/admin-login" className="text-[10px] font-bold text-slate-500 dark:text-gray-400 hover:text-primary transition-all duration-300 tracking-[0.2em] uppercase hover:underline underline-offset-4 decoration-2">
                     Admin Portal Access
                   </Link>
                 </div>
